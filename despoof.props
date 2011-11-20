@@ -7,6 +7,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <IntDir>$(SolutionDir)obj\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)include;C:\libs\yaml-cpp\include;C:\libs\boost_1_47_0;C:\libs\sdl\include;C:\libs\WpdPack\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>

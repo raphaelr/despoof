@@ -13,6 +13,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Public Header Files">
+      <UniqueIdentifier>{f330ff5d-32a5-4add-bb0b-4fb98efebfc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -22,6 +25,12 @@
   <ItemGroup>
     <ClInclude Include="targetwindows.h">
       <Filter>Private Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\despoof\network_interface.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\despoof\reference_type.h">
+      <Filter>Public Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
