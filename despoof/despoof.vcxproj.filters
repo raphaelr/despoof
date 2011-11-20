@@ -23,9 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetwindows.h">
-      <Filter>Private Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\despoof\network_interface.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
