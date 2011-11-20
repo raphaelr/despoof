@@ -14,5 +14,13 @@
     <ClInclude Include="..\include\despoof\win32\targetwindows.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\despoof\win32\error.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

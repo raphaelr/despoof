@@ -62,7 +62,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\despoof\win32\error.h" />
     <ClInclude Include="..\include\despoof\win32\targetwindows.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="error.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
