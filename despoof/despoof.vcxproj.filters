@@ -29,5 +29,8 @@
     <ClInclude Include="..\include\despoof\reference_type.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\despoof\import.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

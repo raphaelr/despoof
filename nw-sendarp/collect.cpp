@@ -1,5 +1,7 @@
+#include <despoof/win32/targetwindows.h>
 #include <cstdint>
 #include <vector>
+#include <despoof/import.h>
 #include <despoof/win32/error.h>
 #include "network_interface_implementation.h"
 
@@ -7,9 +9,9 @@ using namespace std;
 using namespace despoof;
 using namespace despoof::win32;
 
-network_interface::interface_container network_interface::collect()
+static interface_container collect_implementation()
 {
-	network_interface::interface_container result;
+	interface_container result;
 	vector<uint8_t> buffer;
 	IP_ADAPTER_INFO *info = nullptr;
 	ULONG length = 0;
@@ -32,7 +34,12 @@ network_interface::interface_container network_interface::collect()
 	} while(error != ERROR_SUCCESS);
 
 	for(auto adapter = info; adapter; adapter = adapter->Next) {
-		result.push_back(unique_ptr<network_interface_implementation>(new network_interface_implementation(adapter)));
+		result.push_back(make_shared<network_interface_implementation>(adapter));
 	}
 	return result;
+}
+
+extern "C" collect_function __declspec(dllexport) getcollect(void)
+{
+	return collect_implementation;
 }
