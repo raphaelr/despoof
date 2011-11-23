@@ -24,6 +24,9 @@
     <ClCompile Include="reload.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\despoof\network_interface.h">
@@ -36,6 +39,12 @@
       <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="reload.h">
+      <Filter>Private Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\despoof\loglevels.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="log.h">
       <Filter>Private Header Files</Filter>
     </ClInclude>
   </ItemGroup>

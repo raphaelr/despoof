@@ -2,23 +2,30 @@
 #include <algorithm>
 #include <despoof/import.h>
 #include "reload.h"
+#include "log.h"
 #include <despoof/win32/error.h>
 
 using namespace std;
 using namespace despoof;
 
-int wmain()
+template<typename GetFunction>
+static auto loadsym(const wchar_t *file, const char *symbol) -> decltype(GetFunction()())
 {
-	auto module = LoadLibrary(L"nw-sendarp.dll");
+	auto module = LoadLibrary(file);
 	if(!module) {
 		throw_windows_error(L"LoadLibrary");
 	}
-	auto raw_getcollect = GetProcAddress(module, "getcollect");
-	if(!raw_getcollect) {
+	auto raw_get = GetProcAddress(module, symbol);
+	if(!raw_get) {
 		throw_windows_error(L"GetProcAddress");
 	}
-	auto getcollect = static_cast<getcollect_function>(static_cast<void*>(raw_getcollect));
-	despoof::collect = getcollect();
+	return static_cast<GetFunction>(static_cast<void*>(raw_get))();
+}
+
+int wmain()
+{
+	despoof::collect = loadsym<getcollect_function>(L"nw-sendarp.dll", "getcollect");
+	despoof::log::logger = loadsym<getlog_function>(L"log-console.dll", "getlog");
 
 	auto pairs = reload();
 	for_each(pairs.begin(), pairs.end(), [](const adapter_address &address) {
