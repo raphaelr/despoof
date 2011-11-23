@@ -1,7 +1,7 @@
 #include <despoof/win32/targetwindows.h>
 #include <algorithm>
-#include <despoof/network_interface.h>
 #include <despoof/import.h>
+#include "reload.h"
 #include <despoof/win32/error.h>
 
 using namespace std;
@@ -18,15 +18,10 @@ int wmain()
 		throw_windows_error(L"GetProcAddress");
 	}
 	auto getcollect = static_cast<getcollect_function>(static_cast<void*>(raw_getcollect));
+	despoof::collect = getcollect();
 
-	auto interfaces = getcollect()();
-	for_each(interfaces.begin(), interfaces.end(), [](shared_ptr<network_interface> &iface) {
-		wprintf(L" - %ls\n", iface->name().c_str());
-		for_each(iface->addresses().begin(), iface->addresses().end(), [](const boost::asio::ip::address_v4 &addr) {
-			wprintf(L"     Address: %hs\n", addr.to_string().c_str());
-		});
-		for_each(iface->gateways().begin(), iface->gateways().end(), [](const boost::asio::ip::address_v4 &addr) {
-			wprintf(L"     Gateway: %hs\n", addr.to_string().c_str());
-		});
+	auto pairs = reload();
+	for_each(pairs.begin(), pairs.end(), [](const adapter_address &address) {
+		wprintf(L"%ls: %hs -> %hs\n", address.interface->name().c_str(), address.address.to_string().c_str(), address.gateway.to_string().c_str());
 	});
 }

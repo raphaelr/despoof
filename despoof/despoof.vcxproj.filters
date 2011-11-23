@@ -21,6 +21,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="reload.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\despoof\network_interface.h">
@@ -31,6 +34,9 @@
     </ClInclude>
     <ClInclude Include="..\include\despoof\import.h">
       <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="reload.h">
+      <Filter>Private Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
