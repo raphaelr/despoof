@@ -9,7 +9,7 @@ using namespace std;
 using namespace despoof;
 
 template<typename GetFunction>
-static auto loadsym(const wchar_t *file, const char *symbol) -> decltype(GetFunction()())
+static decltype(GetFunction()()) loadsym(const wchar_t *file, const char *symbol)
 {
 	auto module = LoadLibrary(file);
 	if(!module) {
