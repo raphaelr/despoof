@@ -1,12 +1,14 @@
 #include <despoof/win32/targetwindows.h>
 #include <algorithm>
 #include <despoof/import.h>
+#include <despoof/string.h>
 #include "reload.h"
 #include "log.h"
 #include <despoof/win32/error.h>
 
 using namespace std;
 using namespace despoof;
+using boost::wformat;
 
 template<typename GetFunction>
 static decltype(GetFunction()()) loadsym(const wchar_t *file, const char *symbol)
@@ -29,6 +31,6 @@ int wmain()
 
 	auto pairs = reload();
 	for_each(pairs.begin(), pairs.end(), [](const adapter_address &address) {
-		wprintf(L"%ls: %hs -> %hs\n", address.interface->name().c_str(), address.address.to_string().c_str(), address.gateway.to_string().c_str());
+		log::info(wformat(L"%1%: %2% -> %3%\n") % address.interface->name() % widen(address.address.to_string()) % widen(address.gateway.to_string()));
 	});
 }

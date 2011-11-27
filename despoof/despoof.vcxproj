@@ -75,6 +75,7 @@
     <ClInclude Include="..\include\despoof\loglevels.h" />
     <ClInclude Include="..\include\despoof\network_interface.h" />
     <ClInclude Include="..\include\despoof\reference_type.h" />
+    <ClInclude Include="..\include\despoof\string.h" />
     <ClInclude Include="log.h" />
     <ClInclude Include="reload.h" />
   </ItemGroup>
