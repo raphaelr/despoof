@@ -7,7 +7,7 @@ using namespace despoof::log;
 
 log_function despoof::log::logger;
 
-void despoof::log::info(const wformat &format)
+void despoof::log::info(const format &format)
 {
 	logger(log_info, format.str());
 }

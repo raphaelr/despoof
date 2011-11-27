@@ -7,5 +7,5 @@
 namespace despoof { namespace log {
 	extern log_function logger;
 
-	void info(const boost::wformat &format);
+	void info(const boost::format &format);
 }}

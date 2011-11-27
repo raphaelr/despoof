@@ -7,19 +7,19 @@ using namespace std;
 using namespace boost;
 using namespace despoof;
 
-static wchar_t* severitytext(int severity)
+static char* severitytext(int severity)
 {
 	switch(severity) {
 	case log_info:
-		return L"INFO";
+		return "INFO";
 	default:
-		return L"????";
+		return "????";
 	}
 }
 
-static void log(int severity, const wstring &text)
+static void log(int severity, const string &text)
 {
-	wcout << wformat(L"[%1%] %2%") % severitytext(severity) % text << endl;
+	cout << format("[%1%] %2%") % severitytext(severity) % text << endl;
 }
 
 extern "C" log_function __declspec(dllexport) getlog()

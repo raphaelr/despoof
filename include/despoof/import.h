@@ -8,6 +8,6 @@ namespace despoof {
 	typedef interface_container(*collect_function)();
 	typedef collect_function(*getcollect_function)();
 
-	typedef void(*log_function)(int severity, const std::wstring &text);
+	typedef void(*log_function)(int severity, const std::string &text);
 	typedef log_function(*getlog_function)();
 }

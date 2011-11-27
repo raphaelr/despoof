@@ -29,7 +29,7 @@ static interface_container collect_implementation()
 		case ERROR_SUCCESS:
 			break;
 		default:
-			throw_windows_error2(L"GetAdaptersInfo", error);
+			throw_windows_error2("GetAdaptersInfo", error);
 		}
 	} while(error != ERROR_SUCCESS);
 
