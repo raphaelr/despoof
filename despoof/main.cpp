@@ -3,6 +3,7 @@
 #include <despoof/import.h>
 #include "reload.h"
 #include "log.h"
+#include "configuration.h"
 #include <despoof/win32/error.h>
 
 using namespace std;
@@ -23,8 +24,18 @@ static decltype(GetFunction()()) loadsym(const char *file, const char *symbol)
 	return static_cast<GetFunction>(static_cast<void*>(raw_get))();
 }
 
-int wmain()
+int main(int argc, char **argv)
 {
+	configuration config;
+	try {
+		config = configuration::load(argc, argv);
+	} catch(const configuration_error &e) {
+		e.print_errors();
+		return 1;
+	}
+
+	printf("Interval: %i\n", config.interval);
+
 	despoof::collect = loadsym<getcollect_function>("nw-sendarp.dll", "getcollect");
 	despoof::log::logger = loadsym<getlog_function>("log-console.dll", "getlog");
 
