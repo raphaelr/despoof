@@ -10,6 +10,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${Output_directory})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${Output_directory})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${Output_directory})
 
+add_subdirectory(vendor)
+
 add_subdirectory(log-console)
 add_subdirectory(nw-sendarp)
 add_subdirectory(win32support)
