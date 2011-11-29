@@ -3,7 +3,7 @@
 #include <despoof/import.h>
 #include "reload.h"
 #include "log.h"
-#include "configuration.h"
+#include "command_line.h"
 #include <despoof/win32/error.h>
 
 using namespace std;
@@ -28,8 +28,8 @@ int main(int argc, char **argv)
 {
 	configuration config;
 	try {
-		config = configuration::load(argc, argv);
-	} catch(const configuration_error &e) {
+		command_line_to_configuration(config, argc, argv);
+	} catch(const command_line_error &e) {
 		e.print_errors();
 		return 1;
 	}
