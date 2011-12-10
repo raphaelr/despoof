@@ -3,9 +3,14 @@
 using namespace std;
 using namespace despoof;
 
-context::context(collect_function collect, log_function log)
-	: collect_(collect), log_(logger(log))
+context::context(configuration &config, collect_function collect, log_function log)
+	: config_(config), collect_(collect), log_(logger(log))
 {
+}
+
+configuration& context::config()
+{
+	return config_;
 }
 
 logger& context::log()

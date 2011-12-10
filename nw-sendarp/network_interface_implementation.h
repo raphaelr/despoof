@@ -13,5 +13,6 @@ namespace despoof { namespace win32 {
 		virtual const std::string& name() const override { return name_; }
 		virtual const address_container& addresses() const override { return addresses_; }
 		virtual const address_container& gateways() const override { return gateways_; }
+		virtual void fix(const boost::asio::ip::address_v4 &me, const boost::asio::ip::address_v4 &him) override;
 	};
 }}

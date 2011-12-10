@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "context.h"
 #include "command_line.h"
+#include "corelogic.h"
 #include <despoof/import.h>
 #include <despoof/win32/error.h>
 
@@ -36,10 +37,14 @@ int main(int argc, char **argv)
 
 	printf("Interval: %i\n", config.interval);
 
-	context ctx(loadsym<getcollect_function>("nw-sendarp.dll", "getcollect"), loadsym<getlog_function>("log-console.dll", "getlog"));
+	context ctx(config, loadsym<getcollect_function>("nw-sendarp.dll", "getcollect"), loadsym<getlog_function>("log-console.dll", "getlog"));
 
 	auto pairs = ctx.reload();
 	for_each(pairs.begin(), pairs.end(), [&](const adapter_address &address) {
 		ctx.log().info(format("%1%: %2% -> %3%\n") % address.interface->name() % address.address.to_string() % address.gateway.to_string());
 	});
+	
+	while(true) {
+		iterate(ctx, pairs);
+	}
 }

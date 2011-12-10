@@ -1,5 +1,6 @@
 #pragma once
 
+#include <despoof/network_interface.h>
 #include <boost/asio/ip/address_v4.hpp>
 
 namespace despoof {
