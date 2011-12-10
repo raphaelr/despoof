@@ -1,10 +1,8 @@
 #pragma once
 
-#include <despoof/import.h>
+#include <boost/asio/ip/address_v4.hpp>
 
 namespace despoof {
-	extern collect_function collect;
-
 	struct adapter_address {
 		std::shared_ptr<network_interface> interface;
 		boost::asio::ip::address_v4 address;
@@ -15,6 +13,4 @@ namespace despoof {
 		{
 		}
 	};
-
-	std::list<adapter_address> reload();
 }

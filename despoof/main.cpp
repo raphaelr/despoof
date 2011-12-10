@@ -1,9 +1,8 @@
 #include <despoof/win32/targetwindows.h>
 #include <algorithm>
-#include <despoof/import.h>
-#include "reload.h"
-#include "log.h"
+#include "context.h"
 #include "command_line.h"
+#include <despoof/import.h>
 #include <despoof/win32/error.h>
 
 using namespace std;
@@ -36,11 +35,10 @@ int main(int argc, char **argv)
 
 	printf("Interval: %i\n", config.interval);
 
-	despoof::collect = loadsym<getcollect_function>("nw-sendarp.dll", "getcollect");
-	despoof::log::logger = loadsym<getlog_function>("log-console.dll", "getlog");
+	context ctx(loadsym<getcollect_function>("nw-sendarp.dll", "getcollect"), loadsym<getlog_function>("log-console.dll", "getlog"));
 
-	auto pairs = reload();
-	for_each(pairs.begin(), pairs.end(), [](const adapter_address &address) {
-		log::info(format("%1%: %2% -> %3%\n") % address.interface->name() % address.address.to_string() % address.gateway.to_string());
+	auto pairs = ctx.reload();
+	for_each(pairs.begin(), pairs.end(), [&](const adapter_address &address) {
+		ctx.log().info(format("%1%: %2% -> %3%\n") % address.interface->name() % address.address.to_string() % address.gateway.to_string());
 	});
 }

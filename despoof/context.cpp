@@ -1,15 +1,21 @@
-#include "reload.h"
-#include <algorithm>
+#include "context.h"
 
 using namespace std;
-using namespace boost::asio::ip;
 using namespace despoof;
 
-collect_function despoof::collect;
-
-list<adapter_address> despoof::reload()
+context::context(collect_function collect, log_function log)
+	: collect_(collect), log_(logger(log))
 {
-	auto interfaces = collect();
+}
+
+logger& context::log()
+{
+	return log_;
+}
+
+list<adapter_address> context::reload()
+{
+	auto interfaces = collect_();
 	list<adapter_address> result;
 
 	for(auto ifaceit = interfaces.begin(); ifaceit != interfaces.end(); ++ifaceit) {
