@@ -32,6 +32,7 @@ int main(int argc, char **argv)
 		e.print_errors();
 		return 1;
 	}
+	if(config._nostart) { return 0; }
 
 	printf("Interval: %i\n", config.interval);
 

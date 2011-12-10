@@ -38,9 +38,11 @@ static Result alloc_check(Result value)
 void despoof::command_line_to_configuration(configuration &config, int argc, char **argv)
 {
 	auto interval = alloc_check(arg_int0("i", "interval", "<n>", "Time of one despoof iteration in milliseconds"));
+	auto help = alloc_check(arg_lit0("h", "help", "Displays this help text"));
+
 	auto end = alloc_check(arg_end(20));
 	auto table = make_shared<argtable>();
-	(*table) += interval, end;
+	(*table) += interval, help, end;
 
 	if(arg_parse(argc, argv, table->data()) > 0) {
 		throw argtable_error(argv[0], table, end);
@@ -48,6 +50,12 @@ void despoof::command_line_to_configuration(configuration &config, int argc, cha
 
 	if(interval->count > 0) {
 		config.interval = interval->ival[0];
+	}
+	if(help->count > 0) {
+		printf("Usage: %s ", argv[0]);
+		arg_print_syntax(stdout, table->data(), "\n\n");
+		arg_print_glossary(stdout, table->data(), NULL);
+		config._nostart = true;
 	}
 }
 

@@ -3,6 +3,7 @@
 using namespace despoof;
 
 configuration::configuration()
-	: interval(5000)
+	: interval(5000),
+	  _nostart(false)
 {
 }
