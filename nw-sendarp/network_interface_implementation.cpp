@@ -23,6 +23,8 @@ void network_interface_implementation::fix(const boost::asio::ip::address_v4 &me
 
 	auto result = SendARP(ntohl(him.to_ulong()), ntohl(me.to_ulong()), mac, &size);
 	switch(result) {
+	case ERROR_SUCCESS:
+		// Everything OK
 	case ERROR_GEN_FAILURE:
 	case ERROR_BAD_NET_NAME:
 		// No ARP reply
