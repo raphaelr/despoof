@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <despoof/import/collect.h>
 #include <despoof/logger.h>
 #include "configuration.h"
 #include "adapter_address.h"

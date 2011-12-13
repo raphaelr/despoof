@@ -1,7 +1,7 @@
 #include <despoof/win32/targetwindows.h>
 #include <cstdint>
 #include <vector>
-#include <despoof/import.h>
+#include <despoof/import/collect.h>
 #include <despoof/win32/error.h>
 #include "network_interface_implementation.h"
 

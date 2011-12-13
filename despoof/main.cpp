@@ -3,7 +3,8 @@
 #include "context.h"
 #include "command_line.h"
 #include "corelogic.h"
-#include <despoof/import.h>
+#include <despoof/import/log.h>
+#include <despoof/import/collect.h>
 #include <despoof/win32/error.h>
 
 using namespace std;

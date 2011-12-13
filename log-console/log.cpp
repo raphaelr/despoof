@@ -1,6 +1,6 @@
 #include <iostream>
 #include <boost/format.hpp>
-#include <despoof/import.h>
+#include <despoof/import/log.h>
 #include <despoof/loglevels.h>
 
 using namespace std;
@@ -12,6 +12,8 @@ static char* severitytext(int severity)
 	switch(severity) {
 	case log_info:
 		return "INFO";
+	case log_warn:
+		return "WARN";
 	default:
 		return "????";
 	}

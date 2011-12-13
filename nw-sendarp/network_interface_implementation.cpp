@@ -3,6 +3,7 @@
 #include <despoof/win32/error.h>
 
 using namespace std;
+using boost::format;
 using namespace boost::asio::ip;
 using namespace despoof;
 using namespace despoof::win32;
@@ -16,7 +17,7 @@ network_interface_implementation::network_interface_implementation(const IP_ADAP
 	address_list_into_container(gateways_, info->GatewayList);
 }
 
-void network_interface_implementation::fix(const boost::asio::ip::address_v4 &me, const boost::asio::ip::address_v4 &him)
+void network_interface_implementation::fix(const boost::asio::ip::address_v4 &me, const boost::asio::ip::address_v4 &him, const logger &log)
 {
 	ULONG mac[2];
 	ULONG size = sizeof(mac);
@@ -25,9 +26,11 @@ void network_interface_implementation::fix(const boost::asio::ip::address_v4 &me
 	switch(result) {
 	case ERROR_SUCCESS:
 		// Everything OK
+		break;
 	case ERROR_GEN_FAILURE:
 	case ERROR_BAD_NET_NAME:
-		// No ARP reply
+		log.warn(format("%1%: Host %2% not found - host down?") % name() % him.to_string());
+		break;
 	case ERROR_NOT_FOUND:
 		// Source IP (me) does not exist
 		break;
