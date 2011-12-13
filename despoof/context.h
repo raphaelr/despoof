@@ -1,8 +1,8 @@
 #pragma once
 
 #include <list>
+#include <despoof/logger.h>
 #include "configuration.h"
-#include "logger.h"
 #include "adapter_address.h"
 
 namespace despoof {
