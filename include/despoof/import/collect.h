@@ -5,5 +5,5 @@
 #include <despoof/network_api.h>
 
 namespace despoof {
-	typedef std::unique_ptr<network_api>(*getapi_function)();
+	typedef network_api* (*getapi_function)();
 }

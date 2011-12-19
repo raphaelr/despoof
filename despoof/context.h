@@ -14,10 +14,10 @@ namespace despoof {
 
 		logger& log();
 		configuration& config();
-		std::list<adapter_address> reload();
 	public:
 		context(configuration &config, std::unique_ptr<network_api> &&api, log_function log);		
 
+		std::list<adapter_address> reload();
 		void iterate(std::list<adapter_address> &addresses);
 	};
 }

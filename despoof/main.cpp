@@ -37,10 +37,10 @@ int main(int argc, char **argv)
 
 	printf("Interval: %i\n", config.interval);
 
-	context ctx(config, loadsym<getapi_function>("nw-sendarp.dll", "getapi")(), loadsym<getlog_function>("log-console.dll", "getlog")());
+	context ctx(config, unique_ptr<network_api>(loadsym<getapi_function>("nw-sendarp.dll", "getapi")()), loadsym<getlog_function>("log-console.dll", "getlog")());
 	
 	while(true) {
-		list<adapter_address> addresses;
+		list<adapter_address> addresses = ctx.reload();
 		ctx.iterate(addresses);
 	}
 }
