@@ -26,6 +26,9 @@ static GetFunction loadsym(const char *file, const char *symbol)
 
 int main(int argc, char **argv)
 {
+	setlocale(LC_ALL, "");
+	_tzset();
+
 	configuration config;
 	try {
 		command_line_to_configuration(config, argc, argv);
