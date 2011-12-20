@@ -5,6 +5,6 @@ add_executable(despoof-svc ${Sources})
 set_target_properties(despoof PROPERTIES COMPILE_DEFINITIONS BUILD_DEFAULT)
 set_target_properties(despoof-svc PROPERTIES COMPILE_DEFINITIONS BUILD_SERVICE)
 
-set(Despoof_libs win32support argtable2)
+set(Despoof_libs common win32support argtable2)
 target_link_libraries(despoof ${Despoof_libs})
 target_link_libraries(despoof-svc ${Despoof_libs})
