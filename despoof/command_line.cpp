@@ -44,7 +44,11 @@ void despoof::command_line_to_configuration(configuration &config, int argc, cha
 
 	auto end = alloc_check(arg_end(20));
 	auto table = make_shared<argtable>();
-	(*table) += interval, log_module, nw_module, help, end;
+
+#ifndef BUILD_SERVICE
+	(*table) += help;
+#endif
+	(*table) += interval, log_module, nw_module, end;
 
 	if(arg_parse(argc, argv, table->data()) > 0) {
 		throw argtable_error(argv[0], table, end);

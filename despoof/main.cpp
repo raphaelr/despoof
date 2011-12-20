@@ -28,7 +28,8 @@ static string modfile(const char *prefix, const string &name)
 {
 	return (format("%1%-%2%.dll") % prefix % name).str();
 }
-int main(int argc, char **argv)
+
+bool despoof_init(int argc, char **argv, unique_ptr<context> &ctx)
 {
 	setlocale(LC_ALL, "");
 	_tzset();
@@ -38,15 +39,29 @@ int main(int argc, char **argv)
 		command_line_to_configuration(config, argc, argv);
 	} catch(const command_line_error &e) {
 		e.print_errors();
-		return 1;
+		return false;
 	}
 	
-	if(config._nostart) { return 0; }
+	if(config._nostart) { return false; }
 
-	context ctx(config, unique_ptr<network_api>(loadsym<getapi_function>(modfile("nw", config.nw_module), "getapi")()), loadsym<getlog_function>(modfile("log", config.log_module), "getlog")());
-	
+	ctx.reset(new context(config, unique_ptr<network_api>(loadsym<getapi_function>(modfile("nw", config.nw_module), "getapi")()), loadsym<getlog_function>(modfile("log", config.log_module), "getlog")()));
+}
+
+void despoof_run(context &ctx)
+{
 	list<adapter_address> addresses = ctx.reload();
 	while(true) {
 		ctx.iterate(addresses);
+	}
+}
+
+int main(int argc, char **argv)
+{
+	unique_ptr<context> ctx;
+	if(despoof_init(argc, argv, ctx)) {
+		despoof_run(*ctx);
+		return 0;
+	} else {
+		return 1;
 	}
 }
