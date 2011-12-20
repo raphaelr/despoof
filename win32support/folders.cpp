@@ -17,16 +17,20 @@ string despoof::win32::appdata()
 	if(result == S_FALSE) {
 		throw folder_not_found("local application data");
 	}
+	buffer.resize(buffer.find_first_of((char) 0));
 	return buffer;
 }
 
 string despoof::win32::appdata(const std::vector<std::string> &folders)
 {
-	auto path = appdata();
+	string path = appdata();
 	for_each(folders.begin(), folders.end(), [&](const std::string &str) {
 		path += '/' + str;
 		if(!CreateDirectory(path.c_str(), NULL)) {
-			throw_windows_error("CreateDirectory");
+			auto error = GetLastError();
+			if(error != ERROR_ALREADY_EXISTS) {
+				throw_windows_error2("CreateDirectory", error);
+			}
 		}
 	});
 	return path;

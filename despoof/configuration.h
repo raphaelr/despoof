@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <stdexcept>
 
 namespace despoof {
@@ -11,5 +12,7 @@ namespace despoof {
 		bool _nostart;
 
 		int interval;
+		std::string log_module;
+		std::string nw_module;
 	};
 }

@@ -11,9 +11,9 @@ using namespace despoof;
 using boost::format;
 
 template<typename GetFunction>
-static GetFunction loadsym(const char *file, const char *symbol)
+static GetFunction loadsym(const string &file, const char *symbol)
 {
-	auto module = LoadLibrary(file);
+	auto module = LoadLibrary(file.c_str());
 	if(!module) {
 		throw_windows_error("LoadLibrary");
 	}
@@ -24,6 +24,10 @@ static GetFunction loadsym(const char *file, const char *symbol)
 	return static_cast<GetFunction>(static_cast<void*>(raw_get));
 }
 
+static string modfile(const char *prefix, const string &name)
+{
+	return (format("%1%-%2%.dll") % prefix % name).str();
+}
 int main(int argc, char **argv)
 {
 	setlocale(LC_ALL, "");
@@ -40,7 +44,7 @@ int main(int argc, char **argv)
 
 	printf("Interval: %i\n", config.interval);
 
-	context ctx(config, unique_ptr<network_api>(loadsym<getapi_function>("nw-sendarp.dll", "getapi")()), loadsym<getlog_function>("log-console.dll", "getlog")());
+	context ctx(config, unique_ptr<network_api>(loadsym<getapi_function>(modfile("nw", config.nw_module), "getapi")()), loadsym<getlog_function>(modfile("log", config.log_module), "getlog")());
 	
 	while(true) {
 		list<adapter_address> addresses = ctx.reload();
