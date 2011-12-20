@@ -48,6 +48,16 @@ bool network_api_implementation::invalid()
 	}
 }
 
+void network_api_implementation::wait_until_invalid()
+{
+	DWORD uninteresting;
+	if(GetOverlappedResult(notify_wait_handle, &notify_overlapped, &uninteresting, true)) {
+		register_notify();
+	} else {
+		throw_windows_error("GetOverlappedResult");
+	}
+}
+
 network_api::interface_container network_api_implementation::collect_interfaces()
 {
 	interface_container result;

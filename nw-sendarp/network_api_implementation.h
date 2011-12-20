@@ -13,5 +13,6 @@ namespace despoof { namespace win32 {
 
 		virtual interface_container collect_interfaces() override;
 		virtual bool invalid() override;
+		virtual void wait_until_invalid() override;
 	};
 }}

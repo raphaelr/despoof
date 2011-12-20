@@ -8,5 +8,6 @@ namespace despoof {
 
 		virtual interface_container collect_interfaces() = 0;
 		virtual bool invalid() = 0;
+		virtual void wait_until_invalid() = 0;
 	};
 }

@@ -34,5 +34,8 @@ list<adapter_address> context::reload()
 		}
 	}
 
+	if(result.empty()) {
+		log().warn(format("No interfaces or address-gateway pairs found"));
+	}
 	return result;
 }
