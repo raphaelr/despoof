@@ -27,7 +27,7 @@ void despoof::install()
 
 	SERVICE_DESCRIPTION sd = { "Defense against ARP spoofing - Regularly updates the ARP caches of the configured gateways with the local MAC address" };
 	if(ChangeServiceConfig2(svc, SERVICE_CONFIG_DESCRIPTION, &sd)) {
-		printf("Service successfully installed.\n");
+		printf("Service successfully installed.");
 	} else {
 		DeleteService(svc);
 		throw_windows_error("ChangeServiceConfig2");
@@ -39,9 +39,12 @@ void despoof::install()
 
 static string svcpath()
 {
-	char filename[MAX_PATH];
-	if(!GetModuleFileName(NULL, filename, sizeof(filename))) {
+	string filename;
+	filename.resize(MAX_PATH);
+	if(!GetModuleFileName(NULL, &filename[0], filename.size())) {
 		throw_windows_error("GetModuleFileName");
 	}
-	return filename;
+
+	filename.resize(filename.rfind('\\')+1);
+	return '"' + filename + "despoof-svc.exe\"";
 }

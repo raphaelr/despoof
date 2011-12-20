@@ -15,7 +15,7 @@ void despoof::uninstall()
 	}
 
 	if(DeleteService(svc)) {
-		printf("Service successfully removed.\n");
+		printf("Service successfully removed.");
 	} else {
 		throw_windows_error("DeleteService");
 	}
