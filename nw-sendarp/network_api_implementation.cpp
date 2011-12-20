@@ -13,12 +13,19 @@ using namespace despoof::win32;
 
 network_api_implementation::network_api_implementation()
 {
+	notify_overlapped.hEvent = CreateEvent(nullptr, true, false, nullptr);
+	if(!notify_overlapped.hEvent) {
+		throw_windows_error("CreateEvent");
+	}
 	register_notify();
 }
 
 void network_api_implementation::register_notify()
 {
-	notify_overlapped.hEvent = CreateEvent(nullptr, true, false, nullptr);
+	if(!ResetEvent(notify_overlapped.hEvent)) {
+		throw_windows_error("ResetEvent");
+	}
+
 	DWORD error = NotifyAddrChange(&notify_wait_handle, &notify_overlapped);
 	if(error != ERROR_IO_PENDING) {
 		throw_windows_error2("NotifyAddrChange", error);

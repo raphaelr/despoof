@@ -40,14 +40,13 @@ int main(int argc, char **argv)
 		e.print_errors();
 		return 1;
 	}
+	
 	if(config._nostart) { return 0; }
-
-	printf("Interval: %i\n", config.interval);
 
 	context ctx(config, unique_ptr<network_api>(loadsym<getapi_function>(modfile("nw", config.nw_module), "getapi")()), loadsym<getlog_function>(modfile("log", config.log_module), "getlog")());
 	
+	list<adapter_address> addresses = ctx.reload();
 	while(true) {
-		list<adapter_address> addresses = ctx.reload();
 		ctx.iterate(addresses);
 	}
 }

@@ -28,7 +28,7 @@ list<adapter_address> context::reload()
 	for(auto ifaceit = interfaces.begin(); ifaceit != interfaces.end(); ++ifaceit) {
 		for(auto addrit = (*ifaceit)->addresses().begin(); addrit != (*ifaceit)->addresses().end(); ++addrit) {
 			for(auto gwit = (*ifaceit)->gateways().begin(); gwit != (*ifaceit)->gateways().end(); ++gwit) {
-				log().info(format("%1%: %2% -> %3%\n") % (*ifaceit)->name() % addrit->to_string() % gwit->to_string());
+				log().info(format("%1%: %2% -> %3%") % (*ifaceit)->name() % addrit->to_string() % gwit->to_string());
 				result.push_back(adapter_address(*ifaceit, *addrit, *gwit));
 			}
 		}
