@@ -34,27 +34,39 @@ void network_api_implementation::register_notify()
 
 bool network_api_implementation::invalid()
 {
-	DWORD uninteresting;
-	if(GetOverlappedResult(notify_wait_handle, &notify_overlapped, &uninteresting, false)) {
+	auto result = WaitForSingleObject(notify_wait_handle, 0);
+
+	switch(result) {
+	case WAIT_OBJECT_0:
 		register_notify();
 		return true;
-	} else {
-		auto error = GetLastError();
-		if(error == ERROR_IO_INCOMPLETE) {
-			return false;
-		} else {
-			throw_windows_error2("GetOverlappedResult", error);
-		}
+	case WAIT_TIMEOUT:
+		return false;
+	case WAIT_FAILED:
+		throw_windows_error("WaitForSingleObject");
+	default:
+		assert(!"WaitForSingleObject didn't return WAIT_OBJECT_0, WAIT_TIMEOUT or WAIT_FAILED");
 	}
 }
 
-void network_api_implementation::wait_until_invalid()
+void network_api_implementation::wait_until_invalid(abortable &ab)
 {
-	DWORD uninteresting;
-	if(GetOverlappedResult(notify_wait_handle, &notify_overlapped, &uninteresting, true)) {
+	again:
+	ab.recognize_abort(true);
+	auto result = WaitForSingleObjectEx(notify_wait_handle, INFINITE, true);
+	ab.recognize_abort(false);
+
+	switch(result) {
+	case WAIT_OBJECT_0:
 		register_notify();
-	} else {
-		throw_windows_error("GetOverlappedResult");
+		break;
+	case WAIT_IO_COMPLETION:
+		if(ab.abort_pending()) { return; }
+		goto again;
+	case WAIT_FAILED:
+		throw_windows_error("WaitForSingleObjectEx");
+	default:
+		assert(!"WaitForSingleObjectEx didn't return WAIT_OBJECT_0, WAIT_IO_COMPLETION or WAIT_FAILED");
 	}
 }
 

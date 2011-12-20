@@ -1,3 +1,4 @@
+#include <despoof/win32/targetwindows.h>
 #include <boost/format.hpp>
 #include "context.h"
 

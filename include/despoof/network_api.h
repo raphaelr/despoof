@@ -1,5 +1,6 @@
 #pragma once
 
+#include <despoof/win32/abortable.h>
 #include <despoof/network_interface.h>
 
 namespace despoof {
@@ -8,6 +9,6 @@ namespace despoof {
 
 		virtual interface_container collect_interfaces() = 0;
 		virtual bool invalid() = 0;
-		virtual void wait_until_invalid() = 0;
+		virtual void wait_until_invalid(win32::abortable &ab) = 0;
 	};
 }

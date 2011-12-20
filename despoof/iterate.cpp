@@ -8,8 +8,8 @@ using namespace despoof;
 void context::iterate(list<adapter_address> &addresses)
 {
 	if(addresses.empty()) {
-		api_->wait_until_invalid();
-		addresses = reload();
+		api_->wait_until_invalid(*this);
+		if(!abort_pending()) { addresses = reload(); }
 		return;
 	}
 	int delay = config().interval / addresses.size();
@@ -21,6 +21,10 @@ void context::iterate(list<adapter_address> &addresses)
 		}
 
 		it->interface->fix(it->address, it->gateway, log_);
-		Sleep(delay);
+
+		recognize_abort(true);
+		SleepEx(delay, true);
+		if(abort_pending()) { return; }
+		recognize_abort(false);
 	}
 }

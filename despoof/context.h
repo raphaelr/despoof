@@ -1,13 +1,14 @@
 #pragma once
 
 #include <list>
+#include <despoof/win32/abortable.h>
 #include <despoof/import/collect.h>
 #include <despoof/logger.h>
 #include "configuration.h"
 #include "adapter_address.h"
 
 namespace despoof {
-	class context {
+	class context : public win32::abortable {
 		logger log_;
 		std::unique_ptr<network_api> api_;
 		configuration config_;
