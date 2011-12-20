@@ -2,9 +2,10 @@
 #include "command_line.h"
 #include "operations.h"
 
+using namespace std;
 using namespace despoof;
 
-int main(int argc, char **argv)
+int realmain(int argc, char **argv)
 {
 	configuration cfg;
 	try {
@@ -19,5 +20,17 @@ int main(int argc, char **argv)
 		install();
 	} else if(cfg.uninstall) {
 		uninstall();
+	}
+
+	return 0;
+}
+
+int main(int argc, char **argv)
+{
+	try {
+		return realmain(argc, argv);
+	} catch(exception &e) {
+		fprintf(stderr, "%s\n", e.what());
+		return 1;
 	}
 }
