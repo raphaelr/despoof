@@ -38,8 +38,8 @@ static Result alloc_check(Result value)
 void despoof::command_line_to_configuration(configuration &config, int argc, char **argv)
 {
 	auto interval = alloc_check(arg_int0("i", "interval", "<n>", "Time of one despoof iteration in milliseconds"));
-	auto log_module = alloc_check(arg_str0("l", "log", "<mod>", "Name of the log module, without the \"log\" prefix"));
-	auto nw_module = alloc_check(arg_str0("nw", "network", "<mod>", "Name of the network module, without the \"nw\" prefix"));
+	auto log_module = alloc_check(arg_str0("o", "log", "<mod>", "Name of the log module, without the \"log\" prefix"));
+	auto nw_module = alloc_check(arg_str0("n", "network", "<mod>", "Name of the network module, without the \"nw\" prefix"));
 	auto help = alloc_check(arg_lit0("h", "help", "Displays this help text"));
 
 	auto end = alloc_check(arg_end(20));
