@@ -4,6 +4,7 @@
 #include <ctime>
 #include <boost/format.hpp>
 #include <despoof/import/log.h>
+#include <despoof/logger-util.h>
 #include <despoof/loglevels.h>
 
 using namespace std;
@@ -13,22 +14,9 @@ using namespace despoof::win32;
 
 static ofstream target;
 
-static char* severitytext(int severity)
+static void xlog(int severity, const std::string &text)
 {
-	switch(severity) {
-	case log_info:
-		return "INFO";
-	case log_warn:
-		return "WARN";
-	default:
-		return "????";
-	}
-}
-
-static void log(int severity, const string &text)
-{
-	target << format("[%1%] %2%") % severitytext(severity) % text << endl;
-	target.flush();
+	despoof::log(target, severity, text);
 }
 
 extern "C" log_function __declspec(dllexport) getlog()
@@ -48,5 +36,5 @@ extern "C" log_function __declspec(dllexport) getlog()
 
 	target.exceptions(ios_base::failbit);
 	target.open((format("%1%/log-%2%#%3%.log") % despoof_appdata() % name % now).str(), ios_base::out | ios_base::trunc);
-	return log;
+	return xlog;
 }

@@ -14,6 +14,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${Output_directory})
 add_subdirectory(vendor)
 
 add_subdirectory(common)
+add_subdirectory(common-log)
 add_subdirectory(win32support)
 add_subdirectory(log-console)
 add_subdirectory(log-file)
