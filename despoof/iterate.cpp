@@ -1,4 +1,5 @@
 #include <despoof/win32/targetwindows.h>
+#include <despoof/win32/error.h>
 #include <algorithm>
 #include "context.h"
 
@@ -9,7 +10,7 @@ void context::iterate(list<adapter_address> &addresses)
 {
 	if(addresses.empty()) {
 		api_->wait_until_invalid(*this);
-		if(!abort_pending()) { addresses = reload(); }
+		if(!aborting()) { addresses = reload(); }
 		return;
 	}
 	int delay = config().interval / addresses.size();
@@ -22,9 +23,14 @@ void context::iterate(list<adapter_address> &addresses)
 
 		it->interface->fix(it->address, it->gateway, log_);
 
-		recognize_abort(true);
-		SleepEx(delay, true);
-		if(abort_pending()) { return; }
-		recognize_abort(false);
+		switch(WaitForSingleObject(wait_event(), delay)) {
+		case WAIT_OBJECT_0:
+		case WAIT_TIMEOUT:
+			break;
+		case WAIT_FAILED:
+			throw_windows_error("WaitForSingleObject");
+		default:
+			assert(!"WaitForSingleObject didn't return WAIT_OBJECT_0, WAIT_TIMEOUT or WAIT_FAILED");
+		}
 	}
 }

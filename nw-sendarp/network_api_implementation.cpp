@@ -51,22 +51,18 @@ bool network_api_implementation::invalid()
 
 void network_api_implementation::wait_until_invalid(abortable &ab)
 {
-	again:
-	ab.recognize_abort(true);
-	auto result = WaitForSingleObjectEx(notify_wait_handle, INFINITE, true);
-	ab.recognize_abort(false);
+	HANDLE handles[] = {notify_wait_handle, ab.wait_event()};
+	auto result = WaitForMultipleObjects(2, handles, false, INFINITE);
 
 	switch(result) {
 	case WAIT_OBJECT_0:
 		register_notify();
+	case WAIT_OBJECT_0 + 1:
 		break;
-	case WAIT_IO_COMPLETION:
-		if(ab.abort_pending()) { return; }
-		goto again;
 	case WAIT_FAILED:
-		throw_windows_error("WaitForSingleObjectEx");
+		throw_windows_error("WaitForSingleObject");
 	default:
-		assert(!"WaitForSingleObjectEx didn't return WAIT_OBJECT_0, WAIT_IO_COMPLETION or WAIT_FAILED");
+		assert(!"WaitForSingleObject didn't return WAIT_OBJECT_0/1 or WAIT_FAILED");
 	}
 }
 

@@ -7,37 +7,27 @@
 using namespace despoof::win32;
 
 abortable::abortable()
-	: abort_pending_(false), abortable_(false)
+	: event_(CreateEvent(NULL, true, false, NULL)), aborting_(false)
 {
-	if(!DuplicateHandle(GetCurrentProcess(), GetCurrentThread(), GetCurrentProcess(), &thread_, DUPLICATE_SAME_ACCESS, false, DUPLICATE_SAME_ACCESS)) {
-		throw_windows_error("DuplicateHandle");
-	}
-}
-
-void __stdcall abortable::apcproc(__w64 unsigned long self)
-{
-	reinterpret_cast<abortable*>(self)->abort_apc();
-}
-
-bool abortable::abort_pending()
-{
-	return abort_pending_;
-}
-
-void abortable::recognize_abort(bool value)
-{
-	abortable_ = value;
-}
-
-void abortable::abort_apc()
-{
-	if(!abortable_) {
-		abort();
+	if(!event_) {
+		throw_windows_error("CreateEvent");
 	}
 }
 
 void abortable::abort()
 {
-	abort_pending_ = true;
-	QueueUserAPC(apcproc, thread_, reinterpret_cast<ULONG_PTR>(this));
+	if(!SetEvent(event_)) {
+		throw_windows_error("SetEvent");
+	}
+	aborting_ = true;
+}
+
+void* abortable::wait_event()
+{
+	return event_;
+}
+
+bool abortable::aborting()
+{
+	return aborting_;
 }
