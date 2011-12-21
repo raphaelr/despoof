@@ -15,6 +15,8 @@ static char* severitytext(int severity)
 		return "INFO";
 	case log_warn:
 		return "WARN";
+	case log_fail:
+		return "FAIL";
 	default:
 		return "????";
 	}

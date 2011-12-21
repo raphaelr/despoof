@@ -1,10 +1,12 @@
 #ifdef BUILD_SERVICE
 
-#include <stdexcept>
 #include <despoof/win32/targetwindows.h>
 #include <despoof/win32/error.h>
+#include <stdexcept>
+#include <typeinfo>
 #include "init.h"
 
+using boost::format;
 using namespace std;
 using namespace despoof;
 
@@ -49,22 +51,30 @@ static void WINAPI service_main(DWORD argc, LPSTR *argv)
 	
 	SetServiceStatus(status_handle, &status);
 
-	try {
-		if(despoof_init(argc, argv, ctx)) {
-			status.dwControlsAccepted = accepted_controls;
-			SetServiceStatus(status_handle, &status);
-			
-			list<adapter_address> addresses = ctx->reload();
-			while(keep_running) {
-				ctx->iterate(addresses);
-			}
-		} else {
-			status.dwWin32ExitCode = ERROR_SERVICE_SPECIFIC_ERROR;
-			status.dwServiceSpecificExitCode = 1;
-		}
-	} catch(exception&) {
+	auto fail = [&]() {
 		status.dwWin32ExitCode = ERROR_SERVICE_SPECIFIC_ERROR;
 		status.dwServiceSpecificExitCode = 1;
+	};
+
+	try {
+		if(despoof_init(argc, argv, ctx)) {
+			try {
+				status.dwControlsAccepted = accepted_controls;
+				SetServiceStatus(status_handle, &status);
+			
+				list<adapter_address> addresses = ctx->reload();
+				while(keep_running) {
+					ctx->iterate(addresses);
+				}
+			} catch(exception &e) {
+				ctx->log().fail(format("%1%: %2%") % typeid(e).name() % e.what());
+				fail();
+			}
+		} else {
+			fail();
+		}
+	} catch(exception&) {
+		fail();
 	}
 
 	status.dwCurrentState = SERVICE_STOPPED;

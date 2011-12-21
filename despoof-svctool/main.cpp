@@ -5,7 +5,7 @@
 using namespace std;
 using namespace despoof;
 
-int realmain(int argc, char **argv)
+int svctool_main(int argc, char **argv)
 {
 	configuration cfg;
 	try {
@@ -35,7 +35,7 @@ int realmain(int argc, char **argv)
 int main(int argc, char **argv)
 {
 	try {
-		return realmain(argc, argv);
+		return svctool_main(argc, argv);
 	} catch(silent_exit&) {
 		printf("\n");
 	} catch(exception &e) {
