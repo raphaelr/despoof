@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void despoof::uninstall()
+void despoof::uninstall(const configuration &config)
 {
 	auto sc = sc_manager(SC_MANAGER_CREATE_SERVICE);
 	auto svc = OpenService(sc, "despoof", DELETE);

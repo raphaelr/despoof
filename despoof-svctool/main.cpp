@@ -17,9 +17,9 @@ int realmain(int argc, char **argv)
 	if(cfg._nostart) { return 0; }
 
 	if(cfg.install) {
-		install();
+		install(cfg);
 	} else if(cfg.uninstall) {
-		uninstall();
+		uninstall(cfg);
 	}
 
 	return 0;

@@ -9,7 +9,7 @@ using namespace std;
 
 static string svcpath();
 
-void despoof::install()
+void despoof::install(const configuration &config)
 {
 	auto sc = sc_manager(SC_MANAGER_CREATE_SERVICE);
 	auto svc = CreateService(sc, "despoof", "Despoof",

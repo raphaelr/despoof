@@ -7,6 +7,9 @@ namespace despoof {
 		bool install;
 		bool uninstall;
 
+		bool start;
+		bool stop;
+
 		bool _nostart;
 	};
 }
