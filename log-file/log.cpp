@@ -1,14 +1,15 @@
 #include <despoof/win32/targetwindows.h>
 #include <despoof/win32/folders.h>
 #include <fstream>
-#include <ctime>
 #include <boost/format.hpp>
+#include <boost/date_time.hpp>
 #include <despoof/import/log.h>
 #include <despoof/logger-util.h>
 #include <despoof/loglevels.h>
 
 using namespace std;
 using namespace boost;
+using namespace boost::posix_time;
 using namespace despoof;
 using namespace despoof::win32;
 
@@ -21,20 +22,16 @@ static void xlog(int severity, const std::string &text)
 
 extern "C" log_function __declspec(dllexport) getlog()
 {
-	__time64_t now;	
-	_time64(&now);
-	auto lt = localtime(&now);
-	char buffer[256];
-	auto result = strftime(buffer, sizeof(buffer), "%c", lt);
-	assert(result);
+	static time_facet *tf = new time_facet("%x-%X.%f");
+	static locale loc(locale(""), tf);
 
-	string name(buffer);
-	string::size_type loc;
-	while((loc = name.find(':')) != string::npos) {
-		name[loc] = '_';
+	auto time = (format("%1%", loc) % microsec_clock::local_time()).str();
+	string::size_type pos;
+	while((pos = time.find(':')) != string::npos) {
+		time[pos] = '_';
 	}
 
 	target.exceptions(ios_base::failbit);
-	target.open((format("%1%/log-%2%#%3%.log") % despoof_appdata() % name % now).str(), ios_base::out | ios_base::trunc);
+	target.open((format("%1%/log-%2%.log") % despoof_appdata() % time).str(), ios_base::out | ios_base::trunc);
 	return xlog;
 }
