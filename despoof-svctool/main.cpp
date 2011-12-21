@@ -18,10 +18,18 @@ int realmain(int argc, char **argv)
 
 	if(cfg.install) {
 		install(cfg);
-	} else if(cfg.uninstall) {
+	}
+	if(cfg.start) {
+		start(cfg);
+	}
+	if(cfg.stop) {
+		stop(cfg);
+	}
+	if(cfg.uninstall) {
 		uninstall(cfg);
 	}
 
+	printf("\n");
 	return 0;
 }
 

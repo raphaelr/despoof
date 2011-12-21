@@ -8,7 +8,7 @@ using namespace std;
 
 void despoof::uninstall(const configuration &config)
 {
-	auto sc = sc_manager(SC_MANAGER_CREATE_SERVICE);
+	auto sc = sc_manager();
 	auto svc = OpenService(sc, "despoof", DELETE);
 	if(!svc) {
 		throw_windows_error("OpenService");
