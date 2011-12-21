@@ -12,6 +12,11 @@ void despoof::start(const configuration &config)
 	if(StartService(svc, 0, NULL)) {
 		printf("Service successfully started.");
 	} else {
-		throw_windows_error("StartService");
+		auto error = GetLastError();
+		if(error == ERROR_SERVICE_ALREADY_RUNNING) {
+			printf("The service is already running.");
+		} else {
+			throw_windows_error2("StartService", error);
+		}
 	}
 }

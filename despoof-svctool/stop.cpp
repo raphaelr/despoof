@@ -13,6 +13,11 @@ void despoof::stop(const configuration &config)
 	if(ControlService(svc, SERVICE_CONTROL_STOP, &status)) {
 		printf("Service successfully stopped.");
 	} else {
-		throw_windows_error("ControlService");
+		auto error = GetLastError();
+		if(error == ERROR_SERVICE_NOT_ACTIVE) {
+			printf("The service is already stopped.");
+		} else {
+			throw_windows_error2("ControlService", error);
+		}
 	}
 }
