@@ -3,6 +3,6 @@
 using namespace despoof;
 
 configuration::configuration()
-	: install(false), uninstall(false), start(false), stop(false), _nostart(false)
+	: start_type(auto_start), install(false), uninstall(false), start(false), stop(false), _nostart(false)
 {
 }

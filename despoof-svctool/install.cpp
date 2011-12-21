@@ -12,8 +12,8 @@ static string svcpath();
 void despoof::install(const configuration &config)
 {
 	auto sc = sc_manager(SC_MANAGER_CREATE_SERVICE);
-	auto svc = CreateService(sc, "despoof", "Despoof",
-		SERVICE_CHANGE_CONFIG | DELETE, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, svcpath().c_str(), NULL,
+	auto svc = CreateService(sc, "Despoof", NULL,
+		SERVICE_CHANGE_CONFIG | DELETE, SERVICE_WIN32_OWN_PROCESS, config.start_type, SERVICE_ERROR_NORMAL, svcpath().c_str(), NULL,
 		NULL, NULL, "NT AUTHORITY\\LocalService", NULL);
 	if(!svc) {
 		auto error = GetLastError();
