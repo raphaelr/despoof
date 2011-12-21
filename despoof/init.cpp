@@ -32,8 +32,7 @@ static string modfile(const char *prefix, const string &name)
 
 bool despoof_init(int argc, char **argv, unique_ptr<context> &ctx)
 {
-	setlocale(LC_ALL, "");
-	_tzset();
+	locale::global(locale(""));
 
 	configuration config;
 	try {
