@@ -28,7 +28,6 @@ int realmain(int argc, char **argv)
 	if(cfg.uninstall) {
 		uninstall(cfg);
 	}
-
 	printf("\n");
 	return 0;
 }
@@ -37,6 +36,8 @@ int main(int argc, char **argv)
 {
 	try {
 		return realmain(argc, argv);
+	} catch(silent_exit&) {
+		printf("\n");
 	} catch(exception &e) {
 		fprintf(stderr, "%s\n", e.what());
 		return 1;

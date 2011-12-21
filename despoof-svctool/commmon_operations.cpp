@@ -11,3 +11,18 @@ SC_HANDLE despoof::sc_manager(DWORD access)
 	}
 	return result;
 }
+
+SC_HANDLE despoof::open_despoof_service(SC_HANDLE sc, DWORD access)
+{
+	auto result = OpenService(sc, "Despoof", access);
+	if(!result) {
+		auto error = GetLastError();
+		if(error == ERROR_SERVICE_DOES_NOT_EXIST) {
+			printf("The service is not installed.");
+			throw silent_exit();
+		} else {
+			throw_windows_error2("OpenService", error);
+		}
+	}
+	return result;
+}

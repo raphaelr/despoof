@@ -6,10 +6,7 @@ using namespace despoof;
 void despoof::start(const configuration &config)
 {
 	auto sc = sc_manager();
-	auto svc = OpenService(sc, "despoof", SERVICE_START);
-	if(!svc) {
-		throw_windows_error("OpenService");
-	}
+	auto svc = open_despoof_service(sc, SERVICE_START);
 
 	printf("Starting service...\n");
 	if(StartService(svc, 0, NULL)) {

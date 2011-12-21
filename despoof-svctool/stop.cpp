@@ -6,10 +6,7 @@ using namespace despoof;
 void despoof::stop(const configuration &config)
 {
 	auto sc = sc_manager();
-	auto svc = OpenService(sc, "despoof", SERVICE_STOP | SERVICE_QUERY_STATUS);
-	if(!svc) {
-		throw_windows_error("OpenService");
-	}
+	auto svc = open_despoof_service(sc, SERVICE_STOP);
 
 	SERVICE_STATUS status;
 	printf("Stopping service...\n");
