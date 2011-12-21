@@ -13,10 +13,11 @@ namespace despoof {
 		std::unique_ptr<network_api> api_;
 		configuration config_;
 
-		logger& log();
 		configuration& config();
 	public:
 		context(configuration &config, std::unique_ptr<network_api> &&api, log_function log);		
+
+		logger& log();
 
 		std::list<adapter_address> reload();
 		void iterate(std::list<adapter_address> &addresses);
