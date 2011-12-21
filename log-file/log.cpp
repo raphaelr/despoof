@@ -47,6 +47,6 @@ extern "C" log_function __declspec(dllexport) getlog()
 	}
 
 	target.exceptions(ios_base::failbit);
-	target.open((format("%1%/log-%2%.log") % despoof_appdata() % name).str(), ios_base::out | ios_base::trunc);
+	target.open((format("%1%/log-%2%#%3%.log") % despoof_appdata() % name % now).str(), ios_base::out | ios_base::trunc);
 	return log;
 }
