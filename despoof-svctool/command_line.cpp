@@ -13,13 +13,15 @@ void despoof::command_line_to_configuration(configuration &config, int argc, cha
 	auto uninstall = alloc_check(arg_lit0("u", "uninstall", "Removes the despoof service"));
 	auto start = alloc_check(arg_lit0("s", "start", "Starts the despoof service"));
 	auto stop = alloc_check(arg_lit0("t", "stop", "Stops the despoof service"));
-	auto start_type = alloc_check(arg_str0("y", "start-type", "<type>", "(Only used with --install) Start type of the service; One of \"auto\", \"manual\" or \"disabled\". Default: \"auto\""));
+	auto spacer = alloc_check(arg_rem("", ""));
+	auto install_only = alloc_check(arg_rem("--install specific:", ""));
+	auto start_type = alloc_check(arg_str0("y", "start-type", "<auto|manual|disabled>", "Start type of the service; Default: \"auto\""));
 	auto help = alloc_check(arg_lit0("h", "help", "Displays this help text"));
 
 	auto end = alloc_check(arg_end(20));
 	auto table = make_shared<argtable>();
 
-	(*table) += install, uninstall, start, stop, start_type, help, end;
+	(*table) += install, uninstall, start, stop, spacer, install_only, start_type, help, end;
 
 	if(arg_parse(argc, argv, table->data()) > 0) {
 		throw argtable_error(argv[0], table, end);
