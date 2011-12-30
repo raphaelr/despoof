@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 		success = despoof_init(argc, argv, ctx);
 	} catch(exception &e) {
 		fprintf(stderr, "Error (%s): %s\n", typeid(e).name(), e.what());
-		return 1;
+		throw;
 	}
 
 	if(success) {
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 			return 0;
 		} catch(exception &e) {
 			ctx->log().fail(format("%1%: %2%") % typeid(e).name() % e.what());
-			return 1;
+			throw;
 		}
 	} else {
 		return 1;

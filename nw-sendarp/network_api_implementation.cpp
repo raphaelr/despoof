@@ -41,7 +41,7 @@ bool network_api_implementation::invalid()
 		register_notify();
 		return true;
 	case WAIT_TIMEOUT:
-		return false;
+		return false;	
 	case WAIT_FAILED:
 		throw_windows_error("WaitForSingleObject");
 	default:
