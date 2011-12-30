@@ -14,5 +14,7 @@ namespace despoof {
 		virtual const address_container& addresses() const = 0;
 		virtual const address_container& gateways() const = 0;
 		virtual void fix(const boost::asio::ip::address_v4 &me, const boost::asio::ip::address_v4 &him, const logger &log) = 0;
+
+		virtual ~network_interface() { }
 	};
 }

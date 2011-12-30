@@ -12,5 +12,7 @@ namespace despoof {
 		virtual interface_container collect_interfaces() = 0;
 		virtual bool invalid() = 0;
 		virtual void wait_until_invalid(win32::abortable &ab) = 0;
+
+		virtual ~network_api() { }
 	};
 }
