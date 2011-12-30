@@ -4,7 +4,7 @@
 #include <boost/format.hpp>
 #include <boost/date_time.hpp>
 #include <despoof/import/log.h>
-#include <despoof/logger-util.h>
+#include <despoof/common-log/logger-util.h>
 #include <despoof/loglevels.h>
 
 using namespace std;

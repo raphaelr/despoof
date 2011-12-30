@@ -1,7 +1,7 @@
 #include <boost/format.hpp>
 #include <boost/date_time.hpp>
-#include <despoof/logger-util.h>
 #include <despoof/loglevels.h>
+#include <despoof/common-log/logger-util.h>
 
 using boost::format;
 using namespace boost::posix_time;

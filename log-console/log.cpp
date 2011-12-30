@@ -1,7 +1,7 @@
 #include <iostream>
 #include <boost/format.hpp>
 #include <despoof/import/log.h>
-#include <despoof/logger-util.h>
+#include <despoof/common-log/logger-util.h>
 
 using namespace std;
 using namespace boost;
