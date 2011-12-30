@@ -23,7 +23,7 @@ logger& context::log()
 
 list<adapter_address> context::reload()
 {
-	auto interfaces = api_->collect_interfaces();
+	auto interfaces = api_->collect_interfaces(log_);
 	list<adapter_address> result;
 
 	for(auto ifaceit = interfaces.begin(); ifaceit != interfaces.end(); ++ifaceit) {

@@ -15,7 +15,7 @@ namespace despoof { namespace win32 {
 	public:
 		common_network_api();
 
-		virtual interface_container collect_interfaces() override;
+		virtual interface_container collect_interfaces(logger &log) override;
 		virtual bool invalid() override;
 		virtual void wait_until_invalid(abortable &ab) override;
 	};
@@ -81,7 +81,7 @@ namespace despoof { namespace win32 {
 	}
 
 	template<class interface_implementation>
-	inline network_api::interface_container common_network_api<interface_implementation>::collect_interfaces()
+	inline network_api::interface_container common_network_api<interface_implementation>::collect_interfaces(logger &log)
 	{
 		interface_container result;
 		std::vector<uint8_t> buffer;
@@ -106,7 +106,7 @@ namespace despoof { namespace win32 {
 		} while(error != ERROR_SUCCESS);
 
 		for(auto adapter = info; adapter; adapter = adapter->Next) {
-			result.push_back(std::make_shared<interface_implementation>(adapter));
+			result.push_back(std::make_shared<interface_implementation>(adapter, log));
 		}
 		return result;
 	}

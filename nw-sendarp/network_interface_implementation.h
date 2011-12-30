@@ -5,7 +5,7 @@
 namespace despoof { namespace win32 {
 	class network_interface_implementation : public common_network_interface {
 	public:
-		network_interface_implementation(const IP_ADAPTER_INFO *adapter);
+		network_interface_implementation(const IP_ADAPTER_INFO *adapter, logger &log);
 
 		virtual void fix(const boost::asio::ip::address_v4 &me, const boost::asio::ip::address_v4 &him, const logger &log) override;
 	};

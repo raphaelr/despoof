@@ -7,7 +7,7 @@ using namespace boost::asio::ip;
 using namespace despoof;
 using namespace despoof::win32;
 
-network_interface_implementation::network_interface_implementation(const IP_ADAPTER_INFO *info)
+network_interface_implementation::network_interface_implementation(const IP_ADAPTER_INFO *info, logger&)
 	: common_network_interface(info)
 {
 }
