@@ -2,6 +2,8 @@
 
 #include <despoof/win32/abortable.h>
 #include <despoof/network_interface.h>
+#include <list>
+#include <memory>
 
 namespace despoof {
 	struct network_api {
