@@ -45,4 +45,5 @@ bool despoof_init(int argc, char **argv, unique_ptr<context> &ctx)
 	if(config._nostart) { return false; }
 
 	ctx.reset(new context(config, unique_ptr<network_api>(loadsym<getapi_function>(modfile("nw", config.nw_module), "getapi")()), loadsym<getlog_function>(modfile("log", config.log_module), "getlog")()));
+	return true;
 }

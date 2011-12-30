@@ -11,6 +11,16 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${Output_directory})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${Output_directory})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${Output_directory})
 
+if(MSVC)
+	macro(enable_assertions config)
+		string(REPLACE "/D NDEBUG" "" CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
+	endmacro()
+	
+	enable_assertions(RELEASE)
+	enable_assertions(MINSIZEREL)
+	enable_assertions(RELWITHDEBINFO)
+endif()
+
 add_subdirectory(vendor)
 
 add_subdirectory(common)

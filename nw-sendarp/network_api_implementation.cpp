@@ -47,6 +47,7 @@ bool network_api_implementation::invalid()
 	default:
 		assert(!"WaitForSingleObject didn't return WAIT_OBJECT_0, WAIT_TIMEOUT or WAIT_FAILED");
 	}
+	return true; // Satisfy compiler
 }
 
 void network_api_implementation::wait_until_invalid(abortable &ab)
