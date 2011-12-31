@@ -1,7 +1,7 @@
 despoof
 =======
-despoof is currently in development. It's goal is to neutralize ARP attacks in hostile
-environments like public WiFi networks, schools and so on.
+despoof is currently in development. Its goal is to neutralize ARP attacks in hostile
+environments like public Wi-Fi networks, schools and so on.
 
 Target Platforms
 ----------------
@@ -10,7 +10,7 @@ is planned.
 
 Compile-time requirements
 -------------------------
-despoof uses a number of C++11 featuers which must be supported by the compiler:
+despoof uses a number of C++11 features which must be supported by the compiler:
 
 * Right-angle brackets for templates
 * Lambdas
