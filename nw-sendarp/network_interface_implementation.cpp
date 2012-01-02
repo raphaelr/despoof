@@ -19,6 +19,7 @@ void network_interface_implementation::fix(const address_v4 &me, const address_v
 
 	auto result = SendARP(ntohl(him.to_ulong()), ntohl(me.to_ulong()), mac, &size);
 	switch(result) {
+		// We don't check for ERROR_BUFFER_OVERFLOW because we are not interested in the result of the ARP Request anyway.
 	case ERROR_SUCCESS:
 		// Everything OK
 		break;
