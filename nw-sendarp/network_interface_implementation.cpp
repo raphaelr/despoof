@@ -31,6 +31,6 @@ void network_interface_implementation::fix(const address_v4 &me, const address_v
 		// Source IP (me) does not exist
 		break;
 	default:
-		throw_windows_error2("network_interface_implementation::fix [nw-sendarp.dll]", result);
+		throw_windows_error2("SendARP", result);
 	}
 }

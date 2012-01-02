@@ -1,13 +1,33 @@
 #pragma once
 
 #include <despoof/common-nw/common_network_interface.h>
+#include <array>
+#include <unordered_map>
 #include <stdint.h>
+#include <boost/asio/ip/address_v4.hpp>
 #include <pcap/pcap.h>
+
+namespace std {
+	template<>
+	class hash<boost::asio::ip::address_v4> {
+	public:
+		typedef boost::asio::ip::address_v4 type;
+		size_t operator()(const type &value) const
+		{
+			return hash<unsigned long>()(value.to_ulong());
+		}
+	};
+}
 
 namespace despoof { namespace win32 {
 	class network_interface_implementation : public common_network_interface {
+		typedef std::array<uint8_t, 8> mac_address;
 		pcap_t *pcap;
-		uint8_t mac[6];
+		mac_address interface_mac;
+		std::unordered_map<boost::asio::ip::address_v4, mac_address> arp_table;
+
+		void reload_arp_table();
+		bool mac_for(mac_address &output, const boost::asio::ip::address_v4 &me, const boost::asio::ip::address_v4 &him, const logger &log);
 	public:
 		network_interface_implementation(const IP_ADAPTER_INFO *adapter, logger &log);
 		~network_interface_implementation();
