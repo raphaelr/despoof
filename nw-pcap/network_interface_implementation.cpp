@@ -59,7 +59,7 @@ void network_interface_implementation::reload_arp_table()
 
 		mac_address mac;
 		copy(row.bPhysAddr, row.bPhysAddr + 6, mac.begin());
-		arp_table[address_v4(row.dwAddr)] = mac;
+		arp_table[address_v4(ntohl(row.dwAddr))] = mac;
 	}
 }
 
