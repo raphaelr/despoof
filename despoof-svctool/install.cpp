@@ -3,17 +3,20 @@
 #include <despoof/win32/targetwindows.h>
 #include <despoof/win32/error.h>
 #include <string>
+#include <boost/format.hpp>
 #include "operations.h"
 
+using boost::format;
 using namespace std;
 
 static string svcpath();
 
 void despoof::install(const configuration &config)
 {
+	auto path = (format("\"%1%\" %2%") % svcpath() % config.args).str();
 	auto sc = sc_manager(SC_MANAGER_CREATE_SERVICE);
 	auto svc = CreateService(sc, "Despoof", NULL,
-		SERVICE_CHANGE_CONFIG | DELETE, SERVICE_WIN32_OWN_PROCESS, config.start_type, SERVICE_ERROR_NORMAL, svcpath().c_str(), NULL,
+		SERVICE_CHANGE_CONFIG | DELETE, SERVICE_WIN32_OWN_PROCESS, config.start_type, SERVICE_ERROR_NORMAL, path.c_str(), NULL,
 		NULL, NULL, "NT AUTHORITY\\LocalService", NULL);
 	if(!svc) {
 		auto error = GetLastError();
@@ -46,5 +49,5 @@ static string svcpath()
 	}
 
 	filename.resize(filename.rfind('\\')+1);
-	return '"' + filename + "despoof-svc.exe\"";
+	return filename + "despoof-svc.exe";
 }

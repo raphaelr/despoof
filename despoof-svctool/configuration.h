@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace despoof {
 	struct configuration {
 		static const int auto_start = 2;
@@ -9,6 +11,7 @@ namespace despoof {
 		configuration();
 
 		int start_type;
+		std::string args;
 
 		bool install;
 		bool uninstall;
