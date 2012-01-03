@@ -17,12 +17,16 @@ void despoof::command_line_to_configuration(configuration &config, int argc, cha
 	auto install_only = alloc_check(arg_rem("", "--install specific:"));
 	auto start_type = alloc_check(arg_str0("y", "start-type", "<auto|manual|disabled>", "Start type of the service; Default: \"auto\""));
 	auto args = alloc_check(arg_str0("a", "arguments", "<args>", "Arguments to pass to despoof; see \"despoof --help\""));
+	auto debug = alloc_check(arg_str0("d", "debug", "<command>", "Runs the service in a debugger; Default command is \"" DESPOOF_DEFAULT_DEBUGGER "\""));
 	auto help = alloc_check(arg_lit0("h", "help", "Displays this help text"));
 
 	auto end = alloc_check(arg_end(20));
 	auto table = make_shared<argtable>();
 
-	(*table) += install, uninstall, start, stop, spacer, install_only, start_type, args, help, end;
+	debug->hdr.flag |= ARG_HASOPTVALUE;
+	debug->sval[0] = DESPOOF_DEFAULT_DEBUGGER;
+
+	(*table) += install, uninstall, start, stop, spacer, install_only, start_type, args, debug, help, end;
 
 	if(arg_parse(argc, argv, table->data()) > 0) {
 		throw argtable_error(argv[0], table, end);
@@ -42,6 +46,10 @@ void despoof::command_line_to_configuration(configuration &config, int argc, cha
 
 	if(args->count > 0) {
 		config.args = args->sval[0];
+	}
+
+	if(debug->count > 0) {
+		config.debugger = debug->sval[0];
 	}
 
 	bool invalid_start_type = false;

@@ -14,6 +14,10 @@ static string svcpath();
 void despoof::install(const configuration &config)
 {
 	auto path = (format("\"%1%\" %2%") % svcpath() % config.args).str();
+	if(!config.debugger.empty()) {
+		path = (format("%1% %2%") % config.debugger % path).str();
+	}
+
 	auto sc = sc_manager(SC_MANAGER_CREATE_SERVICE);
 	auto svc = CreateService(sc, "Despoof", NULL,
 		SERVICE_CHANGE_CONFIG | DELETE, SERVICE_WIN32_OWN_PROCESS, config.start_type, SERVICE_ERROR_NORMAL, path.c_str(), NULL,
