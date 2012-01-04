@@ -1,5 +1,6 @@
 #include <new>
 #include <boost/assign/std/vector.hpp>
+#include <despoof/config.h>
 #include "command_line.h"
 #include <despoof/argtable.h>
 
