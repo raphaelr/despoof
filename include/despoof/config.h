@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef DESPOOF_DEFAULT_INTERVAL
+# define DESPOOF_DEFAULT_INTERVAL 750
+#endif
+
 #ifndef DESPOOF_DEFAULT_DEBUGGER
 # define DESPOOF_DEFAULT_DEBUGGER "ntsd -server npipe:pipe=despoof_debug -noio"
 #endif
