@@ -1,5 +1,6 @@
 #include <new>
 #include <boost/assign/std/vector.hpp>
+#include <despoof/config.h>
 #include "command_line.h"
 #include <despoof/argtable.h>
 
@@ -7,11 +8,14 @@ using namespace std;
 using namespace boost::assign;
 using namespace despoof;
 
+#define STR2(x) #x
+#define STR(x) STR2(x)
+
 void despoof::command_line_to_configuration(configuration &config, int argc, char **argv)
 {
-	auto interval = alloc_check(arg_int0("i", "interval", "<n>", "Time of one despoof iteration in milliseconds"));
-	auto log_module = alloc_check(arg_str0("o", "log", "<mod>", "Name of the log module, without the \"log\" prefix"));
-	auto nw_module = alloc_check(arg_str0("n", "network", "<mod>", "Name of the network module, without the \"nw\" prefix"));
+	auto interval = alloc_check(arg_int0("i", "interval", "<n>", "Time of one despoof iteration in milliseconds; Default: " STR(DESPOOF_DEFAULT_INTERVAL)));
+	auto log_module = alloc_check(arg_str0("o", "log", "<mod>", "Name of the log module, without the \"log\" prefix; Default: " DESPOOF_DEFAULT_LOG_MODULE));
+	auto nw_module = alloc_check(arg_str0("n", "network", "<mod>", "Name of the network module, without the \"nw\" prefix; Default: " DESPOOF_DEFAULT_NET_MODULE));
 	auto help = alloc_check(arg_lit0("h", "help", "Displays this help text"));
 
 	auto end = alloc_check(arg_end(20));
