@@ -5,7 +5,7 @@
 #endif
 
 #ifndef DESPOOF_DEFAULT_NET_MODULE
-# define DESPOOF_DEFAULT_NET_MODULE "sendarp"
+# define DESPOOF_DEFAULT_NET_MODULE "pcap"
 #endif
 
 #ifdef DESPOOF_DEFAULT_LOG_MODULE_ALL
