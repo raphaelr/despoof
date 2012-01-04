@@ -21,6 +21,18 @@ if(MSVC)
 	enable_assertions(RELWITHDEBINFO)
 endif()
 
+macro(configuration_variable_string var)
+	if(${var})
+		add_definitions("-DDESPOOF_${var}=\"${${var}}\"")
+	endif()
+endmacro()
+
+configuration_variable_string(DEFAULT_DEBUGGER)
+configuration_variable_string(DEFAULT_NET_MODULE)
+configuration_variable_string(DEFAULT_LOG_MODULE_ALL)
+configuration_variable_string(DEFAULT_LOG_MODULE_NOSVC)
+configuration_variable_string(DEFAULT_LOG_MODULE_SVC)
+
 add_subdirectory(vendor)
 
 add_subdirectory(common)
