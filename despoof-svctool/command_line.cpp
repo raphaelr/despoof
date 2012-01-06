@@ -14,13 +14,11 @@ void despoof::command_line_to_configuration(configuration &config, int argc, cha
 	auto uninstall = alloc_check(arg_lit0("u", "uninstall", "Removes the despoof service"));
 	auto start = alloc_check(arg_lit0("s", "start", "Starts the despoof service"));
 	auto stop = alloc_check(arg_lit0("t", "stop", "Stops the despoof service"));
-	auto spacer1 = alloc_check(arg_rem("", ""));
+	auto spacer = alloc_check(arg_rem("", ""));
 	auto install_only = alloc_check(arg_rem("", "--install specific:"));
-	auto spacer2 = alloc_check(arg_rem("", ""));
 	auto start_type = alloc_check(arg_str0("y", "start-type", "<auto|manual|disabled>", "Start type of the service; Default: \"auto\""));
-	auto debug = alloc_check(arg_str0("d", "debug", "<command>", "Runs the service in a debugger; Default command is \"" DESPOOF_DEFAULT_DEBUGGER "\""));
-	auto install_start_only = alloc_check(arg_rem("", "--install and --start specific:"));
 	auto args = alloc_check(arg_str0("a", "arguments", "<args>", "Arguments to pass to despoof; see \"despoof --help\""));
+	auto debug = alloc_check(arg_str0("d", "debug", "<command>", "Runs the service in a debugger; Default command is \"" DESPOOF_DEFAULT_DEBUGGER "\""));
 	auto help = alloc_check(arg_lit0("h", "help", "Displays this help text"));
 
 	auto end = alloc_check(arg_end(20));
@@ -29,7 +27,7 @@ void despoof::command_line_to_configuration(configuration &config, int argc, cha
 	debug->hdr.flag |= ARG_HASOPTVALUE;
 	debug->sval[0] = DESPOOF_DEFAULT_DEBUGGER;
 
-	(*table) += install, uninstall, start, stop, spacer1, install_only, start_type, spacer2, install_start_only, args, debug, help, end;
+	(*table) += install, uninstall, start, stop, spacer, install_only, start_type, args, debug, help, end;
 
 	if(arg_parse(argc, argv, table->data()) > 0) {
 		throw argtable_error(argv[0], table, end);
