@@ -6,7 +6,7 @@ using namespace std;
 using boost::format;
 using namespace despoof;
 
-context::context(configuration &config,unique_ptr<network_api> &&api, log_function log)
+context::context(configuration &config, unique_ptr<network_api> &&api, log_function log)
 	: config_(config), api_(move(api)), log_(logger(log))
 {
 }

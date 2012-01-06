@@ -4,19 +4,20 @@
 #include <despoof/win32/error.h>
 #include <stdexcept>
 #include <typeinfo>
+#include <despoof/utf_argv.h>
 #include "init.h"
 
 using boost::format;
 using namespace std;
 using namespace despoof;
 
-static void WINAPI service_main(DWORD argc, LPSTR *argv);
+static void WINAPI service_main(DWORD argc, LPWSTR *argv);
 
 int main(int argc, char **argv)
 {
 	SERVICE_TABLE_ENTRY svtable[2];
 	memset(svtable, 0, sizeof(svtable));
-	svtable->lpServiceName = "despoof";
+	svtable->lpServiceName = L"despoof";
 	svtable->lpServiceProc = service_main;
 
 	if(!StartServiceCtrlDispatcher(svtable)) {
@@ -37,9 +38,9 @@ static bool keep_running = true;
 static DWORD WINAPI control_handler(DWORD control, DWORD event_type, void *event_data, void *context);
 const DWORD accepted_controls = SERVICE_ACCEPT_STOP;
 
-static void WINAPI service_main(DWORD argc, LPSTR *argv)
+static void WINAPI service_main(DWORD argc, LPWSTR *wargv)
 {
-	auto status_handle = RegisterServiceCtrlHandlerEx("despoof", control_handler, NULL);
+	auto status_handle = RegisterServiceCtrlHandlerEx(L"despoof", control_handler, NULL);
 	if(!status_handle) {
 		throw_windows_error("RegisterServiceCtrlHandlerEx");
 	}
@@ -57,7 +58,8 @@ static void WINAPI service_main(DWORD argc, LPSTR *argv)
 	};
 
 	try {
-		if(despoof_init(argc, argv, ctx)) {
+		utf_argv uargv(argc, wargv);
+		if(despoof_init(argc, uargv.argv(), ctx)) {
 			try {
 				status.dwControlsAccepted = accepted_controls;
 				SetServiceStatus(status_handle, &status);

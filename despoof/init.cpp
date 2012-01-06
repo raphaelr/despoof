@@ -1,5 +1,6 @@
 #include <despoof/win32/targetwindows.h>
 #include <algorithm>
+#include <boost/locale.hpp>
 #include "context.h"
 #include "command_line.h"
 #include "init.h"
@@ -7,14 +8,17 @@
 #include <despoof/import/collect.h>
 #include <despoof/win32/error.h>
 
-using namespace std;
-using namespace despoof;
 using boost::format;
+using boost::locale::localization_backend_manager;
+using boost::locale::generator;
+using namespace std;
+using namespace boost::locale::conv;
+using namespace despoof;
 
 template<typename GetFunction>
 static GetFunction loadsym(const string &file, const char *symbol)
 {
-	auto module = LoadLibrary(file.c_str());
+	auto module = LoadLibrary(utf_to_utf<wchar_t>(file).c_str());
 	if(!module) {
 		throw_windows_error("LoadLibrary");
 	}
@@ -32,7 +36,8 @@ static string modfile(const char *prefix, const string &name)
 
 bool despoof_init(int argc, char **argv, unique_ptr<context> &ctx)
 {
-	locale::global(locale(""));
+	localization_backend_manager::global().select("std");
+	locale::global(generator().generate(""));
 
 	configuration config;
 	try {

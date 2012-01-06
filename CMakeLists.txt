@@ -33,6 +33,8 @@ configuration_variable_string(DEFAULT_LOG_MODULE_ALL)
 configuration_variable_string(DEFAULT_LOG_MODULE_NOSVC)
 configuration_variable_string(DEFAULT_LOG_MODULE_SVC)
 
+add_definitions(-DUNICODE -D_UNICODE)
+
 add_subdirectory(vendor)
 
 add_subdirectory(common)

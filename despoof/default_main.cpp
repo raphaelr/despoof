@@ -1,11 +1,15 @@
 #ifdef BUILD_DEFAULT
 
 #include <despoof/win32/targetwindows.h>
+#include <algorithm>
 #include <typeinfo>
+#include <boost/locale.hpp>
+#include <despoof/utf_argv.h>
 #include "init.h"
 
 using boost::format;
 using namespace std;
+using namespace boost::locale::conv;
 using namespace despoof;
 
 static BOOL WINAPI control_handler(DWORD type);
@@ -15,24 +19,23 @@ static bool keep_running = true;
 
 static void run()
 {
+	SetConsoleCtrlHandler(control_handler, true);
 	list<adapter_address> addresses = ctx->reload();
 	while(keep_running) {
 		ctx->iterate(addresses);
 	}
 }
 
-int main(int argc, char **argv)
+int wmain(int argc, wchar_t **wargv)
 {
-	SetConsoleCtrlHandler(control_handler, true);
-
 	bool success;
 	try {
-		success = despoof_init(argc, argv, ctx);
+		utf_argv uargv(argc, wargv);
+		success = despoof_init(argc, uargv.argv(), ctx);
 	} catch(exception &e) {
 		fprintf(stderr, "Error (%s): %s\n", typeid(e).name(), e.what());
 		throw;
 	}
-
 	if(success) {
 		try {
 			run();

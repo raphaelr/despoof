@@ -1,4 +1,5 @@
 #include <despoof/win32/targetwindows.h>
+#include <despoof/utf_argv.h>
 #include "command_line.h"
 #include "operations.h"
 
@@ -32,10 +33,11 @@ int svctool_main(int argc, char **argv)
 	return 0;
 }
 
-int main(int argc, char **argv)
+int wmain(int argc, wchar_t **wargv)
 {
 	try {
-		return svctool_main(argc, argv);
+		utf_argv uargv(argc, wargv);
+		return svctool_main(argc, uargv.argv());
 	} catch(silent_exit&) {
 		printf("\n");
 	} catch(exception &e) {

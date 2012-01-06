@@ -8,24 +8,24 @@
 using namespace std;
 using namespace despoof::win32;
 
-string despoof::win32::appdata()
+wstring despoof::win32::appdata()
 {
-	string buffer;
+	wstring buffer;
 	buffer.resize(MAX_PATH);
 	auto result = SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, &buffer[0]);
 	assert(result != E_INVALIDARG);
 	if(result == S_FALSE) {
 		throw folder_not_found("local application data");
 	}
-	buffer.resize(buffer.find_first_of((char) 0));
+	buffer.resize(buffer.find_first_of((wchar_t) 0));
 	return buffer;
 }
 
-string despoof::win32::appdata(const std::vector<std::string> &folders)
+wstring despoof::win32::appdata(const std::vector<std::wstring> &folders)
 {
-	string path = appdata();
-	for_each(folders.begin(), folders.end(), [&](const std::string &str) {
-		path += '/' + str;
+	wstring path = appdata();
+	for_each(folders.begin(), folders.end(), [&](const std::wstring &str) {
+		path += L'/' + str;
 		if(!CreateDirectory(path.c_str(), NULL)) {
 			auto error = GetLastError();
 			if(error != ERROR_ALREADY_EXISTS) {
@@ -36,16 +36,16 @@ string despoof::win32::appdata(const std::vector<std::string> &folders)
 	return path;
 }
 
-static vector<string> get_despoof_folders()
+static vector<wstring> get_despoof_folders()
 {
-	vector<string> folders;
-	folders.push_back("tape software");
-	folders.push_back("despoof");
+	vector<wstring> folders;
+	folders.push_back(L"tape software");
+	folders.push_back(L"despoof");
 	return folders;
 }
-string despoof::win32::despoof_appdata()
+wstring despoof::win32::despoof_appdata()
 {
-	static vector<string> folders = get_despoof_folders();
+	static auto folders = get_despoof_folders();
 	return appdata(folders);
 }
 

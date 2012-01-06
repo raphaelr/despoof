@@ -4,9 +4,11 @@
 #include <despoof/win32/error.h>
 #include <string>
 #include <boost/format.hpp>
+#include <boost/locale.hpp>
 #include "operations.h"
 
 using boost::format;
+using namespace boost::locale::conv;
 using namespace std;
 
 static string svcpath();
@@ -19,9 +21,9 @@ void despoof::install(const configuration &config)
 	}
 
 	auto sc = sc_manager(SC_MANAGER_CREATE_SERVICE);
-	auto svc = CreateService(sc, "Despoof", NULL,
-		SERVICE_CHANGE_CONFIG | DELETE, SERVICE_WIN32_OWN_PROCESS, config.start_type, SERVICE_ERROR_NORMAL, path.c_str(), NULL,
-		NULL, NULL, "NT AUTHORITY\\LocalService", NULL);
+	auto svc = CreateService(sc, L"Despoof", NULL,
+		SERVICE_CHANGE_CONFIG | DELETE, SERVICE_WIN32_OWN_PROCESS, config.start_type, SERVICE_ERROR_NORMAL, utf_to_utf<wchar_t>(path).c_str(), NULL,
+		NULL, NULL, L"NT AUTHORITY\\LocalService", NULL);
 	if(!svc) {
 		auto error = GetLastError();
 		if(error == ERROR_DUPLICATE_SERVICE_NAME || error == ERROR_SERVICE_EXISTS) {
@@ -32,7 +34,7 @@ void despoof::install(const configuration &config)
 		}
 	}
 
-	SERVICE_DESCRIPTION sd = { "Defense against ARP spoofing - Regularly updates the ARP caches of the configured gateways with the local MAC address" };
+	SERVICE_DESCRIPTION sd = { L"Defense against ARP spoofing - Regularly updates the ARP caches of the configured gateways with the local MAC address" };
 	if(ChangeServiceConfig2(svc, SERVICE_CONFIG_DESCRIPTION, &sd)) {
 		printf("Service successfully installed.");
 	} else {
@@ -46,12 +48,12 @@ void despoof::install(const configuration &config)
 
 static string svcpath()
 {
-	string filename;
+	wstring filename;
 	filename.resize(MAX_PATH);
 	if(!GetModuleFileName(NULL, &filename[0], filename.size())) {
 		throw_windows_error("GetModuleFileName");
 	}
 
-	filename.resize(filename.rfind('\\')+1);
-	return filename + "despoof-svc.exe";
+	filename.resize(filename.rfind(L'\\')+1);
+	return utf_to_utf<char>(filename + L"despoof-svc.exe");
 }

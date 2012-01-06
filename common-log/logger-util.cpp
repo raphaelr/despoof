@@ -1,10 +1,8 @@
-#include <boost/format.hpp>
-#include <boost/date_time.hpp>
+#include <boost/locale.hpp>
 #include <despoof/loglevels.h>
 #include <despoof/common-log/logger-util.h>
 
-using boost::format;
-using namespace boost::posix_time;
+using namespace boost::locale;
 using namespace std;
 using namespace despoof;
 
@@ -22,12 +20,16 @@ static char* severitytext(int severity)
 	}
 }
 
+static locale& loglocale()
+{
+	static locale loc(generator().generate(""));
+	return loc;
+}
+
 void despoof::log(ostream &target, int severity, const string &text)
 {
-	static time_facet *tf = new time_facet("%x %X");
-	static locale loc(locale(""), tf);
-
-	auto now = second_clock::local_time();
-	target << format("[%1% %2%] %3%\n", loc) % severitytext(severity) % now % text;
+	auto prev = target.imbue(loglocale());
+	target << "[" << severitytext(severity) << " " << as::datetime << time(0) << "] " << text << endl;
 	target.flush();
+	target.imbue(prev);
 }
