@@ -14,19 +14,18 @@ despoof uses a number of C++11 features which must be supported by the compiler:
 
 * Right-angle brackets for templates
 * Lambdas
-* std::shared_ptr
+* Smart Pointers
 * decltype
 * auto
 * nullptr
 * override
 
-Visual Studio 2010 and recent GCC 4.7 checkouts provide all required features;
-GCC 4.6 may be used using the compiler flag "-Doverride=", i.e.
+Develeopment happens on Visual C++ 10.0, although Despoof should also compile under MinGW
+with GCC 4.6 provided that the keyword `override` is define'd away by the preprocessor.
 
-    cmake -G "MinGW Makefiles" -D CMAKE_CXX_FLAGS="-Doverride=" ..
-
-despoof also depends on some header-only libraries of [Boost](http://www.boost.org/) and
-on the [WinPcap Developer's pack](http://www.winpcap.org/devel.htm).
+despoof also depends on some libraries of [Boost](http://www.boost.org/) (Boost.Locale must
+be compiled; the ICU backend is not needed) and on the
+[WinPcap Developer's pack](http://www.winpcap.org/devel.htm).
 
 Run-time requirements
 ---------------------
@@ -49,7 +48,7 @@ Running
 -------
 The `despoof` executable runs despoof as a background process:
 
-    Usage: despoof  [-h] [-i <n>] [-o <mod>] [-n <mod>]
+    Usage: build\debug\despoof  [-h] [-i <n>] [-o <mod>] [-n <mod>]
     
       -h, --help           Displays this help text
       -i, --interval=<n>   Time of one despoof iteration in milliseconds; Default: 750
@@ -66,7 +65,7 @@ Service
 Despoof can also be run as service. It can be installed using `despoof-svctool --install`. The
 svctool accepts the following parameters:
 
-    Usage: despoof-svctool  [-iusth] [-y <auto|manual|disabled>] [-a <args>] [-d [<command>]]
+    Usage: build\debug\despoof-svctool  [-iusth] [-y <auto|manual|disabled>] [-a <args>] [-d [<command>]]
     
       -i, --install        Installs the despoof service
       -u, --uninstall      Removes the despoof service
@@ -75,8 +74,6 @@ svctool accepts the following parameters:
                            
                            --install specific:
       -y, --start-type=<auto|manual|disabled> Start type of the service; Default: "auto"
-                           
-                           --install and --start specific:
       -a, --arguments=<args> Arguments to pass to despoof; see "despoof --help"
       -d, --debug=[<command>] Runs the service in a debugger; Default command is "ntsd -server npipe:pipe=despoof_debug -noio"
       -h, --help           Displays this help text
@@ -92,6 +89,10 @@ svctool accepts the following parameters:
 The `--arguments` parameter is only used if the service is started as part of Windows' startup procedure;
 If it is started manually it is not honored. You must use the --args parameter again for the 'start' action,
 or use Windows' 'sc' utility: `sc start despoof <args>`.
+
+The service stores its logfiles in `LocalService`'s local AppData folder; Depending on your Windows version this might
+be in `%SystemRoot%\ServiceProfiles\LocalService\AppData\Local` or in `(Documents and Settings)\LocalService\Local Settings`.
+The log files are in the subdirectory `tape software\Despoof`.
 
 License
 -------
