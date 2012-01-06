@@ -21,7 +21,7 @@ void despoof::install(const configuration &config)
 	}
 
 	auto sc = sc_manager(SC_MANAGER_CREATE_SERVICE);
-	auto svc = CreateService(sc, L"Despoof", NULL,
+	auto svc = CreateService(sc, DESPOOF_WIDE_SERVICE_NAME, NULL,
 		SERVICE_CHANGE_CONFIG | DELETE, SERVICE_WIN32_OWN_PROCESS, config.start_type, SERVICE_ERROR_NORMAL, utf_to_utf<wchar_t>(path).c_str(), NULL,
 		NULL, NULL, L"NT AUTHORITY\\LocalService", NULL);
 	if(!svc) {
@@ -34,7 +34,7 @@ void despoof::install(const configuration &config)
 		}
 	}
 
-	SERVICE_DESCRIPTION sd = { L"Defense against ARP spoofing - Regularly updates the ARP caches of the configured gateways with the local MAC address" };
+	SERVICE_DESCRIPTION sd = { DESPOOF_WIDE_SERVICE_DESCRIPTION };
 	if(ChangeServiceConfig2(svc, SERVICE_CONFIG_DESCRIPTION, &sd)) {
 		printf("Service successfully installed.");
 	} else {

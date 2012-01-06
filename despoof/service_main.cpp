@@ -4,6 +4,7 @@
 #include <despoof/win32/error.h>
 #include <stdexcept>
 #include <typeinfo>
+#include <despoof/config.h>
 #include <despoof/utf_argv.h>
 #include "init.h"
 
@@ -17,7 +18,7 @@ int main(int argc, char **argv)
 {
 	SERVICE_TABLE_ENTRY svtable[2];
 	memset(svtable, 0, sizeof(svtable));
-	svtable->lpServiceName = L"despoof";
+	svtable->lpServiceName = DESPOOF_WIDE_SERVICE_NAME;
 	svtable->lpServiceProc = service_main;
 
 	if(!StartServiceCtrlDispatcher(svtable)) {
@@ -40,7 +41,7 @@ const DWORD accepted_controls = SERVICE_ACCEPT_STOP;
 
 static void WINAPI service_main(DWORD argc, LPWSTR *wargv)
 {
-	auto status_handle = RegisterServiceCtrlHandlerEx(L"despoof", control_handler, NULL);
+	auto status_handle = RegisterServiceCtrlHandlerEx(DESPOOF_WIDE_SERVICE_NAME, control_handler, NULL);
 	if(!status_handle) {
 		throw_windows_error("RegisterServiceCtrlHandlerEx");
 	}

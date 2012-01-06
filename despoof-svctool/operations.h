@@ -1,6 +1,7 @@
 #pragma once
 
 #include <despoof/win32/targetwindows.h>
+#include <despoof/config.h>
 #include "configuration.h"
 
 namespace despoof {

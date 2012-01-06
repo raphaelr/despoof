@@ -14,7 +14,7 @@ SC_HANDLE despoof::sc_manager(DWORD access)
 
 SC_HANDLE despoof::open_despoof_service(SC_HANDLE sc, DWORD access)
 {
-	auto result = OpenService(sc, L"Despoof", access);
+	auto result = OpenService(sc, DESPOOF_WIDE_SERVICE_NAME, access);
 	if(!result) {
 		auto error = GetLastError();
 		if(error == ERROR_SERVICE_DOES_NOT_EXIST) {

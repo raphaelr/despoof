@@ -48,7 +48,7 @@ Running
 -------
 The `despoof` executable runs despoof as a background process:
 
-    Usage: build\debug\despoof  [-h] [-i <n>] [-o <mod>] [-n <mod>]
+    Usage: despoof  [-h] [-i <n>] [-o <mod>] [-n <mod>]
     
       -h, --help           Displays this help text
       -i, --interval=<n>   Time of one despoof iteration in milliseconds; Default: 750
@@ -65,7 +65,7 @@ Service
 Despoof can also be run as service. It can be installed using `despoof-svctool --install`. The
 svctool accepts the following parameters:
 
-    Usage: build\debug\despoof-svctool  [-iusth] [-y <auto|manual|disabled>] [-a <args>] [-d [<command>]]
+    Usage: despoof-svctool  [-iusth] [-y <auto|manual|disabled>] [-a <args>] [-d [<command>]]
     
       -i, --install        Installs the despoof service
       -u, --uninstall      Removes the despoof service

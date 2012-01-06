@@ -8,6 +8,14 @@
 # define DESPOOF_DEFAULT_DEBUGGER "ntsd -server npipe:pipe=despoof_debug -noio"
 #endif
 
+#ifndef DESPOOF_SERVICE_NAME
+# define DESPOOF_SERVICE_NAME "despoof"
+#endif
+
+#ifndef DESPOOF_SERVICE_DESCRIPTION
+# define DESPOOF_SERVICE_DESCRIPTION "Defense against ARP spoofing - Regularly updates the ARP caches of the configured gateways with the local MAC address"
+#endif
+
 #ifndef DESPOOF_DEFAULT_NET_MODULE
 # define DESPOOF_DEFAULT_NET_MODULE "pcap"
 #endif
@@ -29,3 +37,10 @@
 #  define DESPOOF_DEFAULT_LOG_MODULE DESPOOF_DEFAULT_LOG_MODULE_NOSVC
 # endif
 #endif
+
+
+#define DESPOOF_INT_WIDEN2(x) L##x
+#define DESPOOF_INT_WIDEN(x) DESPOOF_INT_WIDEN2(x)
+
+#define DESPOOF_WIDE_SERVICE_NAME DESPOOF_INT_WIDEN(DESPOOF_SERVICE_NAME)
+#define DESPOOF_WIDE_SERVICE_DESCRIPTION DESPOOF_INT_WIDEN(DESPOOF_SERVICE_DESCRIPTION)

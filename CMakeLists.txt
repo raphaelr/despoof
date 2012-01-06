@@ -28,6 +28,8 @@ macro(configuration_variable_string var)
 endmacro()
 
 configuration_variable_string(DEFAULT_DEBUGGER)
+configuration_variable_string(SERVICE_NAME)
+configuration_variable_string(SERVICE_DESCRIPTION)
 configuration_variable_string(DEFAULT_NET_MODULE)
 configuration_variable_string(DEFAULT_LOG_MODULE_ALL)
 configuration_variable_string(DEFAULT_LOG_MODULE_NOSVC)
