@@ -31,7 +31,7 @@ int wmain(int argc, wchar_t **wargv)
 	bool success;
 	try {
 		utf_argv uargv(argc, wargv);
-		success = despoof_init(argc, uargv.argv(), ctx);
+		success = despoof::init(argc, uargv.argv(), ctx);
 	} catch(exception &e) {
 		fprintf(stderr, "Error (%s): %s\n", typeid(e).name(), e.what());
 		throw;

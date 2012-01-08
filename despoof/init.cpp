@@ -34,7 +34,7 @@ static string modfile(const char *prefix, const string &name)
 	return (format("%1%-%2%.dll") % prefix % name).str();
 }
 
-bool despoof_init(int argc, char **argv, unique_ptr<context> &ctx)
+bool despoof::init(int argc, char **argv, unique_ptr<context> &ctx)
 {
 	localization_backend_manager::global().select("std");
 	locale::global(generator().generate(""));

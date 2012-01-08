@@ -60,7 +60,7 @@ static void WINAPI service_main(DWORD argc, LPWSTR *wargv)
 
 	try {
 		utf_argv uargv(argc, wargv);
-		if(despoof_init(argc, uargv.argv(), ctx)) {
+		if(despoof::init(argc, uargv.argv(), ctx)) {
 			try {
 				status.dwControlsAccepted = accepted_controls;
 				SetServiceStatus(status_handle, &status);
