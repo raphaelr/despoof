@@ -53,31 +53,32 @@ static void WINAPI service_main(DWORD argc, LPWSTR *wargv)
 	
 	SetServiceStatus(status_handle, &status);
 
-	auto fail = [&]() {
-		status.dwWin32ExitCode = ERROR_SERVICE_SPECIFIC_ERROR;
-		status.dwServiceSpecificExitCode = 1;
-	};
-
+	bool start;
 	try {
 		utf_argv uargv(argc, wargv);
-		if(despoof::init(argc, uargv.argv(), ctx)) {
-			try {
-				status.dwControlsAccepted = accepted_controls;
-				SetServiceStatus(status_handle, &status);
-			
-				list<adapter_address> addresses = ctx->reload();
-				while(keep_running) {
-					ctx->iterate(addresses);
-				}
-			} catch(exception &e) {
-				ctx->log().fail(format("%1%: %2%") % typeid(e).name() % e.what());
-				fail();
-			}
-		} else {
-			fail();
+		if(!despoof::init(argc, uargv.argv(), ctx)) {
+			return;
 		}
-	} catch(exception&) {
-		fail();
+	} catch(exception &ex) {
+		// PANIC
+		status.dwWin32ExitCode = ERROR_SERVICE_SPECIFIC_ERROR;
+		status.dwServiceSpecificExitCode = 1;
+		status.dwCurrentState = SERVICE_STOPPED;
+		SetServiceStatus(status_handle, &status);
+	}
+
+	status.dwControlsAccepted = accepted_controls;
+	SetServiceStatus(status_handle, &status);
+
+	try {
+		list<adapter_address> addresses = ctx->reload();
+		while(keep_running) {
+			ctx->iterate(addresses);
+		}
+	} catch(exception &ex) {
+		ctx->log().fail(format("%1%: %2%") % typeid(ex).name() % ex.what());
+		status.dwWin32ExitCode = ERROR_SERVICE_SPECIFIC_ERROR;
+		status.dwServiceSpecificExitCode = 1;
 	}
 
 	status.dwCurrentState = SERVICE_STOPPED;

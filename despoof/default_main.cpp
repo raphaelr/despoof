@@ -31,21 +31,20 @@ int wmain(int argc, wchar_t **wargv)
 	bool success;
 	try {
 		utf_argv uargv(argc, wargv);
-		success = despoof::init(argc, uargv.argv(), ctx);
+		if(!despoof::init(argc, uargv.argv(), ctx)) {
+			return 0;
+		}
 	} catch(exception &e) {
 		fprintf(stderr, "Error (%s): %s\n", typeid(e).name(), e.what());
 		throw;
 	}
-	if(success) {
-		try {
-			run();
-			return 0;
-		} catch(exception &e) {
-			ctx->log().fail(format("%1%: %2%") % typeid(e).name() % e.what());
-			throw;
-		}
-	} else {
-		return 1;
+	
+	try {
+		run();
+		return 0;
+	} catch(exception &e) {
+		ctx->log().fail(format("%1%: %2%") % typeid(e).name() % e.what());
+		throw;
 	}
 }
 
