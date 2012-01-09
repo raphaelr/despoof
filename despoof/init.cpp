@@ -9,7 +9,6 @@
 #include <despoof/win32/error.h>
 
 using boost::format;
-using boost::locale::localization_backend_manager;
 using boost::locale::generator;
 using namespace std;
 using namespace boost::locale::conv;
@@ -36,7 +35,6 @@ static string modfile(const char *prefix, const string &name)
 
 bool despoof::init(int argc, char **argv, unique_ptr<context> &ctx)
 {
-	localization_backend_manager::global().select("std");
 	locale::global(generator().generate(""));
 
 	configuration config;
