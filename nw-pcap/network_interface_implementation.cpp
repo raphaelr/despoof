@@ -20,46 +20,12 @@ network_interface_implementation::network_interface_implementation(const IP_ADAP
 		log.warn(format("Can't open pcap driver for %1% (aka %2%)") % info->Description % info->AdapterName);
 	}
 	copy(info->Address, info->Address + 6, interface_mac.begin());
-	reload_arp_table();
 }
 
 network_interface_implementation::~network_interface_implementation()
 {
 	if(pcap) {
 		pcap_close(pcap);
-	}
-}
-
-void network_interface_implementation::reload_arp_table()
-{
-	vector<uint8_t> buffer;
-	ULONG size = buffer.size();
-	DWORD error;
-	do {
-		error = GetIpNetTable(reinterpret_cast<MIB_IPNETTABLE*>(buffer.data()), &size, false);
-		switch(error) {
-		case NO_ERROR:
-		case ERROR_NO_DATA:
-			break;
-		case ERROR_INSUFFICIENT_BUFFER:
-			buffer.resize(size);
-			break;
-		case ERROR_INVALID_PARAMETER:
-			assert(!"GetIpNetTable returned ERROR_INVALID_PARAMETER");
-		default:
-			throw_windows_error2("GetIpNetTable", error);
-		}
-	} while(error != NO_ERROR && error != ERROR_NO_DATA);
-
-	auto table = reinterpret_cast<MIB_IPNETTABLE*>(buffer.data());
-	arp_table.clear();
-	for(int i=0; i < table->dwNumEntries; i++) {
-		auto &row = table->table[i];
-		if(row.dwType != MIB_IPNET_TYPE_DYNAMIC && row.dwType != MIB_IPNET_TYPE_STATIC) { continue; }
-
-		mac_address mac;
-		copy(row.bPhysAddr, row.bPhysAddr + 6, mac.begin());
-		arp_table[address_v4(ntohl(row.dwAddr))] = mac;
 	}
 }
 
@@ -119,21 +85,6 @@ void network_interface_implementation::fix(const address_v4 &me, const address_v
 
 bool network_interface_implementation::mac_for(mac_address &output, const address_v4 &me, const address_v4 &him, const logger &log)
 {
-	auto iter = arp_table.find(him);
-	if(iter != arp_table.end()) {
-		output = iter->second;
-		return true;
-	}
-
-	log.info(format("MAC address for %1% not found; reloading ARP table") % him.to_string());
-	reload_arp_table();
-	iter = arp_table.find(him);
-	if(iter != arp_table.end()) {
-		output = iter->second;
-		return true;
-	}
-
-	log.info(format("MAC address for %1% not found; Sending ARP request") % him.to_string());
 	ULONG size = output.size();
 	auto error = SendARP(ntohl(him.to_ulong()), ntohl(me.to_ulong()), reinterpret_cast<ULONG*>(output.data()), &size);
 	switch(error) {
