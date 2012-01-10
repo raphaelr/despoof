@@ -30,7 +30,7 @@ void despoof::install(const configuration &config)
 			printf("The despoof service is already installed.");
 			return;
 		} else {
-			throw_windows_error2("CreateService", error);
+			throw_windows_error("CreateService", error);
 		}
 	}
 

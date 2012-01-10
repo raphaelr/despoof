@@ -99,7 +99,7 @@ bool network_interface_implementation::mac_for(mac_address &output, const addres
 	case ERROR_INVALID_USER_BUFFER:
 		assert(!"SendARP returned ERROR_BUFFER_OVERFLOW/INVALID_PARAMETER/INVALID_USER_BUFFER");
 	default:
-		throw_windows_error2("SendARP", error);
+		throw_windows_error("SendARP", error);
 	}
 	return false;
 }

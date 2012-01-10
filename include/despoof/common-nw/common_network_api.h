@@ -39,7 +39,7 @@ namespace despoof { namespace win32 {
 
 		DWORD error = NotifyAddrChange(&notify_wait_handle, &notify_overlapped);
 		if(error != ERROR_IO_PENDING) {
-			throw_windows_error2("NotifyAddrChange", error);
+			throw_windows_error("NotifyAddrChange", error);
 		}
 	}
 
@@ -101,7 +101,7 @@ namespace despoof { namespace win32 {
 			case ERROR_SUCCESS:
 				break;
 			default:
-				throw_windows_error2("GetAdaptersInfo", error);
+				throw_windows_error("GetAdaptersInfo", error);
 			}
 		} while(error != ERROR_SUCCESS);
 

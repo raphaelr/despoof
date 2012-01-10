@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 			fprintf(stderr, "%s\n", "This program must be run as a service. The non-service version of despoof is called \"despoof.exe\".");
 			return 1;
 		} else {
-			throw_windows_error2("StartServiceCtrlDispatcher", error);
+			throw_windows_error("StartServiceCtrlDispatcher", error);
 		}
 	}
 }

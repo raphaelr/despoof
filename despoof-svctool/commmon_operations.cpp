@@ -21,7 +21,7 @@ SC_HANDLE despoof::open_despoof_service(SC_HANDLE sc, DWORD access)
 			printf("The service is not installed.");
 			throw silent_exit();
 		} else {
-			throw_windows_error2("OpenService", error);
+			throw_windows_error("OpenService", error);
 		}
 	}
 	return result;

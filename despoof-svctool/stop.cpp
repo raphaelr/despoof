@@ -17,7 +17,7 @@ void despoof::stop(const configuration &config)
 		if(error == ERROR_SERVICE_NOT_ACTIVE) {
 			printf("The service is already stopped.");
 		} else {
-			throw_windows_error2("ControlService", error);
+			throw_windows_error("ControlService", error);
 		}
 	}
 }

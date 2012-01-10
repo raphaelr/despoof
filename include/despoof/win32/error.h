@@ -10,6 +10,5 @@ struct windows_error : public std::runtime_error {
 	}
 };
 
-void _throw_windows_error(const char *func, const char *file, unsigned line, DWORD error);
-#define throw_windows_error2(func, error) _throw_windows_error(func, __FILE__, __LINE__, error);
-#define throw_windows_error(func) _throw_windows_error(func, __FILE__, __LINE__, GetLastError());
+void throw_windows_error(const char *func, DWORD error);
+void throw_windows_error(const char *func);

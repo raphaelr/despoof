@@ -29,7 +29,7 @@ wstring despoof::win32::appdata(const std::vector<std::wstring> &folders)
 		if(!CreateDirectory(path.c_str(), NULL)) {
 			auto error = GetLastError();
 			if(error != ERROR_ALREADY_EXISTS) {
-				throw_windows_error2("CreateDirectory", error);
+				throw_windows_error("CreateDirectory", error);
 			}
 		}
 	});
