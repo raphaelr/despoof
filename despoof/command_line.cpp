@@ -17,12 +17,13 @@ void despoof::command_line_to_configuration(configuration &config, int argc, cha
 	auto log_module = alloc_check(arg_str0("o", "log", "<mod>", "Name of the log module, without the \"log\" prefix; Default: " DESPOOF_DEFAULT_LOG_MODULE));
 	auto nw_module = alloc_check(arg_str0("n", "network", "<mod>", "Name of the network module, without the \"nw\" prefix; Default: " DESPOOF_DEFAULT_NET_MODULE));
 	auto help = alloc_check(arg_lit0("h", "help", "Displays this help text"));
+	auto version = alloc_check(arg_lit0("V", "version", "Displays version information"));
 
 	auto end = alloc_check(arg_end(20));
 	auto table = make_shared<argtable>();
 
 #ifndef BUILD_SERVICE
-	(*table) += help;
+	(*table) += help, version;
 #endif
 	(*table) += interval, log_module, nw_module, end;
 
@@ -41,6 +42,12 @@ void despoof::command_line_to_configuration(configuration &config, int argc, cha
 	}
 	if(help->count > 0) {
 		print_help(*table, argv[0]);
+		config._nostart = true;
+	}
+	if(version->count > 0) {
+		printf("%s\n%s\n\n", "Despoof " DESPOOF_VERSION, "Copyright (c) 2011 - 2012 Raphael Robatsch. All rights reserved.");
+		printf("%s\n%s\n", "See the accompanying \"COPYING.txt\" file for the license agreement", "of this software.");
+		printf("%s\n\"%s\".\n", "If there is no COPYING.txt in your software distribution, see", "https://raw.github.com/raphaelr/despoof/master/COPYING.txt", ".");
 		config._nostart = true;
 	}
 }

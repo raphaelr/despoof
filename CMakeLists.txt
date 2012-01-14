@@ -36,7 +36,7 @@ configuration_variable_string(DEFAULT_LOG_MODULE_ALL)
 configuration_variable_string(DEFAULT_LOG_MODULE_NOSVC)
 configuration_variable_string(DEFAULT_LOG_MODULE_SVC)
 
-add_definitions(-DUNICODE -D_UNICODE -DDESPOOF_VERSION=${VERSION})
+add_definitions(-DUNICODE -D_UNICODE -DDESPOOF_VERSION=\"${Version}\")
 
 add_subdirectory(vendor)
 
