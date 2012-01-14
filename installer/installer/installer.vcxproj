@@ -120,10 +120,10 @@
   <ItemGroup>
     <CustomBuild Include="installer.nsi">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">makensis /V2 /DCONFIGURATION=$(Configuration) "/DTARGET_PATH=$(TargetPath)" %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">makensis /V2 /DCONFIGURATION=$(Configuration) "/DTARGET_PATH=$(TargetPath)" %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">makensis /V2 /DCONFIGURATION=$(Configuration) "/DTARGET_PATH=$(TargetPath)" %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">makensis /V2 /DCONFIGURATION=$(Configuration) "/DTARGET_PATH=$(TargetPath)" %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">makensis /V2 /DCONFIGURATION=$(Configuration) "/DTARGET_DIR=$(TargetDir)\" %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">makensis /V2 /DCONFIGURATION=$(Configuration) "/DTARGET_DIR=$(TargetDir)\" %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">makensis /V2 /DCONFIGURATION=$(Configuration) "/DTARGET_DIR=$(TargetDir)\" %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">makensis /V2 /DCONFIGURATION=$(Configuration) "/DTARGET_DIR=$(TargetDir)\" %(FullPath)</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(TargetPath)</Outputs>
