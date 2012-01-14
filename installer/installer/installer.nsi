@@ -4,6 +4,7 @@
 !include FileFunc.nsh
 !include Sections.nsh
 
+SetCompressor /solid lzma
 OutFile "${TARGET_PATH}"
 Name "Despoof"
 RequestExecutionLevel admin
@@ -11,6 +12,14 @@ InstallDir "$PROGRAMFILES\Despoof"
 LicenseData "..\..\COPYING.rtf"
 ShowInstDetails show
 ShowUninstDetails show
+
+VIAddVersionKey "ProductName" "Despoof"
+VIAddVersionKey "ProductVersion" "${VERSION}"
+VIAddVersionKey "FileDescription" "Installer for Despoof"
+VIAddVersionKey "FileVersion" "${VERSION}"
+VIAddVersionKey "CompanyName" "tape software"
+VIAddVersionKey "LegalCopyright" "(c) 2012 Raphael Robatsch"
+VIProductVersion ${VERSION}
 
 Page license
 Page directory
@@ -34,10 +43,11 @@ Section "Despoof" section_main
 	!insertmacro DsFinalizeFiles
 	WriteUninstaller "uninstall.exe"
 	WriteRegStr HKLM ${UNINSTALL_KEY} "DisplayName" "Despoof"
+	WriteRegStr HKLM ${UNINSTALL_KEY} "Publisher" "tape software"
+	WriteRegStr HKLM ${UNINSTALL_KEY} "DisplayVersion" "${VERSION}"
 	WriteRegStr HKLM ${UNINSTALL_KEY} "UninstallString" '"$INSTDIR\uninstall.exe"'
 	WriteRegStr HKLM ${UNINSTALL_KEY} "QuietUninstallString" '"$INSTDIR\uninstall.exe" /S'
 	WriteRegStr HKLM ${UNINSTALL_KEY} "InstallLocation" "$INSTDIR"
-	WriteRegStr HKLM ${UNINSTALL_KEY} "Publisher" "tape software"
 	WriteRegDWORD HKLM ${UNINSTALL_KEY} "NoModify" 1
 	WriteRegDWORD HKLM ${UNINSTALL_KEY} "NoRepair" 1
 	

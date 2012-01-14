@@ -96,7 +96,7 @@ The log files are in the subdirectory `tape software\Despoof`.
 
 License
 -------
-Copyright (c) 2011, Raphael Robatsch  
+Copyright (c) 2011 - 2012, Raphael Robatsch  
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

@@ -12,4 +12,8 @@
 	!define SOURCE_DIR "..\..\${BUILD_DIR}\${CONFIGURATION}"
 !endif
 
+!ifndef VERSION
+	!define /file VERSION ..\..\version.txt
+!endif
+
 !define UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\Despoof"
