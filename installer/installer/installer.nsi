@@ -45,7 +45,7 @@ Section "Despoof" section_main
 	WriteRegDWORD HKLM ${UNINSTALL_KEY} "EstimatedSize" "$0"
 SectionEnd
 
-Section /o "Start Despoof with Windows" section_service
+Section "Start Despoof with Windows" section_service
 	ExecWait '"$INSTDIR\despoof-svctool" --install --start'
 	WriteRegDWORD HKLM ${UNINSTALL_KEY} "DespoofServiceInstalled" 1
 SectionEnd
@@ -63,8 +63,8 @@ SectionEnd
 
 Function .onInit
 	${GetParameters} $0
-	${GetOptions} $0 "service" $1
+	${GetOptions} $0 "noservice" $1
 	IfErrors noselect_service
-	!insertmacro SelectSection ${section_service}
+	!insertmacro UnselectSection ${section_service}
 	noselect_service:
 FunctionEnd
