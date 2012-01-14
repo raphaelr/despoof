@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(despoof CXX)
+file(READ version.txt Version)
 
 set(Despoof_includes "${PROJECT_SOURCE_DIR}/include")
 set(Argtable2_includes "${PROJECT_SOURCE_DIR}/vendor/argtable2/src")
@@ -35,7 +36,7 @@ configuration_variable_string(DEFAULT_LOG_MODULE_ALL)
 configuration_variable_string(DEFAULT_LOG_MODULE_NOSVC)
 configuration_variable_string(DEFAULT_LOG_MODULE_SVC)
 
-add_definitions(-DUNICODE -D_UNICODE)
+add_definitions(-DUNICODE -D_UNICODE -DDESPOOF_VERSION=${VERSION})
 
 add_subdirectory(vendor)
 
