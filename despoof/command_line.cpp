@@ -46,8 +46,8 @@ void despoof::command_line_to_configuration(configuration &config, int argc, cha
 	}
 	if(version->count > 0) {
 		printf("%s\n%s\n\n", "Despoof " DESPOOF_VERSION, "Copyright (c) 2011 - 2012 Raphael Robatsch. All rights reserved.");
-		printf("%s\n%s\n", "See the accompanying \"COPYING.txt\" file for the license agreement", "of this software.");
-		printf("%s\n\"%s\".\n", "If there is no COPYING.txt in your software distribution, see", "https://raw.github.com/raphaelr/despoof/master/COPYING.txt", ".");
+		printf("%s\n%s\n", "See the accompanying \"COPYING.txt\" file for the license agreement", "of this software. If there is no COPYING.txt in your software distribution, see");
+		printf("\"%s\".\n", "https://raw.github.com/raphaelr/despoof/master/COPYING.txt", ".");
 		config._nostart = true;
 	}
 }
