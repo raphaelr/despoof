@@ -4,6 +4,7 @@ file(READ version.txt Version)
 
 set(Despoof_includes "${PROJECT_SOURCE_DIR}/include")
 set(Argtable2_includes "${PROJECT_SOURCE_DIR}/vendor/argtable2/src")
+set(UnitTestCpp_includes "${PROJECT_SOURCE_DIR}/vendor/unittest-cpp/src")
 set(Output_directory "${CMAKE_BINARY_DIR}")
 
 include_directories(${Despoof_includes} ${Argtable2_includes})
