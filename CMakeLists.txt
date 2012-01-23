@@ -50,3 +50,5 @@ add_subdirectory(log-file)
 add_subdirectory(nw-pcap)
 add_subdirectory(despoof)
 add_subdirectory(despoof-svctool)
+
+add_subdirectory(test)
