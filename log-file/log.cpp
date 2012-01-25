@@ -31,8 +31,11 @@ extern "C" log_function __declspec(dllexport) getlog()
 	while((pos = time.find(':')) != string::npos) {
 		time[pos] = '_';
 	}
+	while((pos = time.find('/')) != string::npos) {
+		time[pos] = '-';
+	}
 
 	target.exceptions(ios_base::failbit);
-	target.open((format("%1%/log-%2%.log") % join_folders(local_appdata(), despoof_folders()) % time).str(), ios_base::out | ios_base::trunc);
+	target.open(local_appdata() / despoof_folders() / (format("%1%.log") % time).str(), ios_base::out | ios_base::trunc);
 	return xlog;
 }
