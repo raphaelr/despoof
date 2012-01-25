@@ -39,7 +39,15 @@ string despoof::folders::join_folders(const std::vector<std::string> &folders)
 	return path;
 }
 
-static const vector<string>& despoof::folders::despoof_folders()
+string despoof::folders::join_folders(const std::string &base, const std::vector<std::string> &folders)
+{
+	vector<string> result;
+	result.push_back(local_appdata());
+	result.insert(folders.end(), folders.begin(), folders.end());
+	return join_folders(result);
+}
+
+const vector<string>& despoof::folders::despoof_folders()
 {
 	static vector<string> folders;
 	static int init = [&]() -> int {
@@ -49,17 +57,6 @@ static const vector<string>& despoof::folders::despoof_folders()
 	}();
 
 	return folders;
-}
-const string& despoof::folders::despoof_local_appdata()
-{
-	static vector<string> folders;
-	static int init = [&]() -> int {
-		folders.push_back(local_appdata());
-		folders.insert(folders.end(), despoof_folders().begin(), despoof_folders().end());
-		return 0;
-	}();
-	static string path = join_folders(folders);
-	return path;
 }
 
 folder_not_found::folder_not_found(const string &foldername)
