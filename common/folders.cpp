@@ -4,13 +4,13 @@
 #include <algorithm>
 #include <assert.h>
 #include <boost/locale.hpp>
-#include <despoof/win32/folders.h>
+#include <despoof/folders.h>
 
 using namespace std;
 using namespace boost::locale::conv;
-using namespace despoof::win32;
+using namespace despoof::folders;
 
-string despoof::win32::local_appdata()
+string despoof::folders::local_appdata()
 {
 	wstring buffer;
 	buffer.resize(MAX_PATH);
@@ -23,7 +23,7 @@ string despoof::win32::local_appdata()
 	return utf_to_utf<char>(buffer);
 }
 
-string despoof::win32::join_folders(const std::vector<std::string> &folders)
+string despoof::folders::join_folders(const std::vector<std::string> &folders)
 {
 	string path;
 	for_each(folders.begin(), folders.end(), [&](const std::string &str) {
@@ -39,7 +39,7 @@ string despoof::win32::join_folders(const std::vector<std::string> &folders)
 	return path;
 }
 
-static const vector<string>& despoof::win32::despoof_folders()
+static const vector<string>& despoof::folders::despoof_folders()
 {
 	static vector<string> folders;
 	static int init = [&]() -> int {
@@ -50,7 +50,7 @@ static const vector<string>& despoof::win32::despoof_folders()
 
 	return folders;
 }
-const string& despoof::win32::despoof_local_appdata()
+const string& despoof::folders::despoof_local_appdata()
 {
 	static vector<string> folders;
 	static int init = [&]() -> int {

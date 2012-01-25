@@ -4,7 +4,7 @@
 #include <vector>
 #include <stdexcept>
 
-namespace despoof { namespace win32 {
+namespace despoof { namespace folders {
 	std::string local_appdata();
 	std::string join_folders(const std::vector<std::string> &folders);
 	

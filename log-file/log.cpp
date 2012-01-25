@@ -1,10 +1,10 @@
 #include <despoof/win32/targetwindows.h>
-#include <despoof/win32/folders.h>
 #include <fstream>
 #include <boost/format.hpp>
 #include <boost/date_time.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <despoof/import/log.h>
+#include <despoof/folders.h>
 #include <despoof/common-log/logger-util.h>
 #include <despoof/loglevels.h>
 
@@ -12,7 +12,7 @@ using namespace std;
 using namespace boost;
 using namespace boost::posix_time;
 using namespace despoof;
-using namespace despoof::win32;
+using namespace despoof::folders;
 
 static filesystem::ofstream target;
 
