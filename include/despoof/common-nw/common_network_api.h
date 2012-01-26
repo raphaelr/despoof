@@ -106,7 +106,7 @@ namespace despoof { namespace win32 {
 		} while(error != ERROR_SUCCESS);
 
 		for(auto adapter = info; adapter; adapter = adapter->Next) {
-			if(adapter->Type == MIB_IF_TYPE_ETHERNET) {
+			if(adapter->Type == MIB_IF_TYPE_ETHERNET || adapter->Type == IF_TYPE_IEEE80211) {
 				result.push_back(std::make_shared<interface_implementation>(adapter, log));
 			}
 		}
