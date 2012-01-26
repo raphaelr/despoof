@@ -90,6 +90,9 @@ bool network_interface_implementation::mac_for(mac_address &output, const addres
 	switch(error) {
 	case NO_ERROR:
 		return true;
+	case ERROR_NOT_FOUND:
+		log.info(format("Lost IP Address %1%") % me);
+		break;
 	case ERROR_BAD_NET_NAME:
 	case ERROR_GEN_FAILURE:
 		log.warn(format("No reply received - skipping %1%") % him.to_string());
