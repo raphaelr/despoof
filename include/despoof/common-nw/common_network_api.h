@@ -4,14 +4,12 @@
 #include <despoof/win32/error.h>
 #include <despoof/network_api.h>
 #include <vector>
+#include "interface_change_listener.h"
 
 namespace despoof { namespace win32 {
 	template<class interface_implementation>
 	class common_network_api : public network_api {
-		HANDLE notify_wait_handle;
-		OVERLAPPED notify_overlapped;
-
-		void register_notify();
+		std::unique_ptr<interface_change_listener> change_listener;
 	public:
 		common_network_api();
 
@@ -22,62 +20,20 @@ namespace despoof { namespace win32 {
 
 	template<class T>
 	inline common_network_api<T>::common_network_api()
+		: change_listener(interface_change_listener::create())
 	{
-		notify_overlapped.hEvent = CreateEvent(nullptr, true, false, nullptr);
-		if(!notify_overlapped.hEvent) {
-			throw_windows_error("CreateEvent");
-		}
-		register_notify();
-	}
-
-	template<class T>
-	inline void common_network_api<T>::register_notify()
-	{
-		if(!ResetEvent(notify_overlapped.hEvent)) {
-			throw_windows_error("ResetEvent");
-		}
-
-		DWORD error = NotifyAddrChange(&notify_wait_handle, &notify_overlapped);
-		if(error != ERROR_IO_PENDING) {
-			throw_windows_error("NotifyAddrChange", error);
-		}
 	}
 
 	template<class T>
 	inline bool common_network_api<T>::invalid()
 	{
-		auto result = WaitForSingleObject(notify_wait_handle, 0);
-
-		switch(result) {
-		case WAIT_OBJECT_0:
-			register_notify();
-			return true;
-		case WAIT_TIMEOUT:
-			return false;	
-		case WAIT_FAILED:
-			throw_windows_error("WaitForSingleObject");
-		default:
-			assert(!"WaitForSingleObject didn't return WAIT_OBJECT_0, WAIT_TIMEOUT or WAIT_FAILED");
-		}
-		return true; // Satisfy compiler
+		return change_listener->changed();
 	}
 
 	template<class T>
 	inline void common_network_api<T>::wait_until_invalid(abortable &ab)
 	{
-		HANDLE handles[] = {notify_wait_handle, ab.wait_event()};
-		auto result = WaitForMultipleObjects(2, handles, false, INFINITE);
-
-		switch(result) {
-		case WAIT_OBJECT_0:
-			register_notify();
-		case WAIT_OBJECT_0 + 1:
-			break;
-		case WAIT_FAILED:
-			throw_windows_error("WaitForSingleObject");
-		default:
-			assert(!"WaitForSingleObject didn't return WAIT_OBJECT_0/1 or WAIT_FAILED");
-		}
+		change_listener->wait(ab);
 	}
 
 	template<class interface_implementation>
